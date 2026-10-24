@@ -1,0 +1,6 @@
+{
+  "name": "Chalo - Outstation Cabs from Rewa",
+  "description": "Book reliable outstation cabs from Rewa to Satna, Prayagraj, Varanasi, Jabalpur, Khajuraho, and Bhopal with instant upfront fare calculation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
