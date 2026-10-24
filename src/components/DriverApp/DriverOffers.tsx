@@ -60,6 +60,8 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
   const [actionInProgressId, setActionInProgressId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [confirmCancelAssignmentId, setConfirmCancelAssignmentId] = useState<string | null>(null);
+  const [cancelError, setCancelError] = useState<{ id: string; message: string } | null>(null);
 
   // Pull to refresh gesture support
   const touchStartY = useRef<number>(0);
@@ -73,6 +75,8 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
       setIsLoading(true);
     }
     setErrorMessage(null);
+    setConfirmCancelAssignmentId(null);
+    setCancelError(null);
 
     try {
       if (activeTab === 'offered') {
@@ -136,6 +140,38 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
     } catch (err: any) {
       console.warn('respond_to_offer notice:', err);
       setErrorMessage(err.message || `Failed to ${action} offer.`);
+    } finally {
+      setActionInProgressId(null);
+    }
+  };
+
+  // Handle Driver Cancel Trip on Confirmed Trips in Accepted Trips
+  const handleDriverCancelTrip = async (assignmentId: string) => {
+    setActionInProgressId(assignmentId);
+    setErrorMessage(null);
+    setCancelError(null);
+    setSuccessMessage(null);
+
+    try {
+      const { error } = await supabase.rpc('driver_cancel_trip', {
+        p_assignment: assignmentId,
+        p_reason: null,
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to cancel trip.');
+      }
+
+      setConfirmCancelAssignmentId(null);
+      setSuccessMessage('Trip cancelled and returned to admin for reassignment.');
+      setTimeout(() => setSuccessMessage(null), 3500);
+      // Refresh list afterwards
+      await fetchOffersOrTrips(true);
+    } catch (err: any) {
+      console.warn('driver_cancel_trip notice:', err);
+      const msg = err.message || 'Failed to cancel trip.';
+      setErrorMessage(msg);
+      setCancelError({ id: assignmentId, message: msg });
     } finally {
       setActionInProgressId(null);
     }
@@ -481,6 +517,67 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                       </div>
                     </div>
                   </>
+                )}
+
+                {/* Cancel trip button on confirmed trips only in Accepted Trips; hidden for completed, cancelled, or non-confirmed trips */}
+                {isAcceptedView && bookingStatus === 'confirmed' && (
+                  <div className="pt-1">
+                    {cancelError && cancelError.id === row.assignment_id && (
+                      <div className="mb-2 p-2.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2 animate-in fade-in">
+                        <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
+                        <span>{cancelError.message}</span>
+                      </div>
+                    )}
+
+                    {confirmCancelAssignmentId === row.assignment_id ? (
+                      <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 space-y-3 animate-in fade-in">
+                        <p className="text-xs text-red-200 font-medium leading-relaxed">
+                          Cancel this trip? It will go back to the admin for reassignment.
+                        </p>
+                        <div className="grid grid-cols-2 gap-2.5">
+                          <button
+                            type="button"
+                            disabled={isProcessing}
+                            onClick={() => {
+                              setConfirmCancelAssignmentId(null);
+                              setCancelError(null);
+                            }}
+                            className="min-h-[42px] px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-zinc-200 text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer"
+                          >
+                            No
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isProcessing}
+                            onClick={() => handleDriverCancelTrip(row.assignment_id)}
+                            className="min-h-[42px] px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                          >
+                            {isProcessing ? (
+                              <>
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                <span>Cancelling...</span>
+                              </>
+                            ) : (
+                              <span>Yes</span>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={isProcessing}
+                        onClick={() => {
+                          setConfirmCancelAssignmentId(row.assignment_id);
+                          setCancelError(null);
+                        }}
+                        className="w-full min-h-[44px] rounded-xl bg-red-950/25 hover:bg-red-950/50 active:bg-red-950/70 border border-red-500/30 hover:border-red-500/50 text-red-300 hover:text-red-200 font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                        <span>Cancel trip</span>
+                      </button>
+                    )}
+                  </div>
                 )}
 
                 {/* Accept / Decline Action Buttons (Shown strictly in Offers Inbox) */}
