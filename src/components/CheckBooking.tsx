@@ -18,7 +18,8 @@ import {
   ShieldCheck,
   FileQuestion,
   AlertTriangle,
-  MessageSquare
+  MessageSquare,
+  ExternalLink
 } from 'lucide-react';
 
 export interface BookingLookupResult {
@@ -34,6 +35,8 @@ export interface BookingLookupResult {
   fare_quote: number | null;
   driver_name: string | null;
   vehicle_reg: string | null;
+  pickup_lat?: number | null;
+  pickup_lng?: number | null;
 }
 
 interface CheckBookingProps {
@@ -526,6 +529,17 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
                   <div>
                     <span className="text-[10px] text-zinc-500 uppercase font-semibold block">Pickup Location</span>
                     <span className="text-zinc-200">{booking.pickup_address}</span>
+                    {booking.pickup_lat != null && booking.pickup_lng != null && (
+                      <a
+                        href={`https://www.google.com/maps?q=${booking.pickup_lat},${booking.pickup_lng}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors mt-1 underline underline-offset-2 cursor-pointer"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Open pickup in Maps</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               )}

@@ -14,7 +14,8 @@ import {
   AlertCircle, 
   Loader2, 
   LogOut, 
-  MessageSquare
+  MessageSquare,
+  ExternalLink
 } from 'lucide-react';
 
 interface OfferTripItem {
@@ -32,6 +33,8 @@ interface OfferTripItem {
   rider_phone?: string;
   booking_status?: string;
   assignment_status?: string;
+  pickup_lat?: number | null;
+  pickup_lng?: number | null;
 }
 
 interface DriverOffersProps {
@@ -461,6 +464,17 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                         <div>
                           <span className="text-zinc-500 block text-[10px] uppercase font-semibold">Pickup Address</span>
                           <span className="text-zinc-200">{pickupAddr}</span>
+                          {row.pickup_lat != null && row.pickup_lng != null && (
+                            <a
+                              href={`https://www.google.com/maps?q=${row.pickup_lat},${row.pickup_lng}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors mt-1 underline underline-offset-2 cursor-pointer"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              <span>Open pickup in Maps</span>
+                            </a>
+                          )}
                         </div>
                       </div>
                     )}

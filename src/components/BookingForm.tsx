@@ -15,7 +15,9 @@ import {
   RefreshCw,
   Users,
   Luggage,
-  Info
+  Info,
+  Crosshair,
+  CheckCircle2
 } from 'lucide-react';
 import { 
   supabase, 
@@ -39,6 +41,8 @@ interface BookingFormProps {
     vehicleType: VehicleType;
     tripType: TripType;
     pickupWhen: string;
+    pickupLat?: number | null;
+    pickupLng?: number | null;
   }) => void;
   onOpenCheckBooking?: () => void;
 }
@@ -58,6 +62,50 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
   const [tripType, setTripType] = useState<TripType>('one_way');
   const [pickupAddress, setPickupAddress] = useState<string>('');
   const [dropAddress, setDropAddress] = useState<string>('');
+  
+  // Geolocation State
+  const [pickupCoords, setPickupCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+
+  // Tapping "Use my current location" calls navigator.geolocation.getCurrentPosition with enableHighAccuracy: true and 15s timeout
+  const handleGetCurrentLocation = () => {
+    setLocationError(null);
+    if (!navigator.geolocation) {
+      setLocationError("Couldn't get your location. Please type your address.");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setPickupCoords({ lat, lng });
+        setIsLocating(false);
+        setLocationError(null);
+        // Keep typed address as it is. If empty, fill with "Pinned location"
+        setPickupAddress((current) => current.trim().length > 0 ? current : 'Pinned location');
+      },
+      (err) => {
+        console.warn('Geolocation error:', err);
+        setIsLocating(false);
+        setLocationError("Couldn't get your location. Please type your address.");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+      }
+    );
+  };
+
+  const handleClearLocation = () => {
+    setPickupCoords(null);
+    setLocationError(null);
+    if (pickupAddress === 'Pinned location') {
+      setPickupAddress('');
+    }
+  };
   
   // Default pickup time: 2 hours from now, formatted for datetime-local
   const getDefaultPickupTime = () => {
@@ -175,7 +223,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
     try {
       const isoTimestamp = new Date(pickupWhen).toISOString();
 
-      const { data, error } = await supabase.rpc('create_booking', {
+      const { data, error } = await supabase.rpc('create_booking_with_location', {
         p_name: riderName.trim(),
         p_phone: cleanedPhone,
         p_pickup: pickupAddress.trim(),
@@ -185,13 +233,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
         p_vehicle: vehicleType,
         p_trip: tripType,
         p_when: isoTimestamp,
+        p_lat: pickupCoords ? pickupCoords.lat : null,
+        p_lng: pickupCoords ? pickupCoords.lng : null,
       });
 
       if (error) {
         throw new Error(error.message || 'Booking could not be created');
       }
 
-      // Supabase RPC create_booking returns table with code and fare
+      // Supabase RPC create_booking_with_location returns table with code and fare
       const bookingRecord = Array.isArray(data) ? data[0] : data;
       if (!bookingRecord || !bookingRecord.code) {
         throw new Error('Booking confirmed but no reference code was received. Please contact support.');
@@ -211,6 +261,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
         vehicleType,
         tripType,
         pickupWhen: isoTimestamp,
+        pickupLat: pickupCoords ? pickupCoords.lat : null,
+        pickupLng: pickupCoords ? pickupCoords.lng : null,
       });
     } catch (err: any) {
       console.warn('Booking submission notice:', err?.message || err);
@@ -439,6 +491,53 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
               placeholder="Area, landmark or street"
               className="w-full px-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-400 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
             />
+          </div>
+
+          {/* Location Picker Option */}
+          <div className="mt-2 flex flex-col gap-1.5">
+            {pickupCoords ? (
+              <div className="flex items-center justify-between px-1 py-0.5">
+                <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                  <span>Location captured</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={handleClearLocation}
+                  className="text-xs text-zinc-400 hover:text-white underline underline-offset-2 cursor-pointer transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  type="button"
+                  onClick={handleGetCurrentLocation}
+                  disabled={isLocating}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 text-emerald-400 border border-white/10 text-xs font-semibold transition-colors cursor-pointer min-h-[36px]"
+                >
+                  {isLocating ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                      <span>Getting your location...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Crosshair className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Use my current location</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {locationError && (
+              <p className="text-xs text-amber-300 flex items-center gap-1.5 px-1 animate-in fade-in">
+                <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span>{locationError}</span>
+              </p>
+            )}
           </div>
         </div>
 

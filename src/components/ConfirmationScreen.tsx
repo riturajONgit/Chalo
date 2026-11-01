@@ -10,7 +10,8 @@ import {
   Phone, 
   MessageSquare, 
   ArrowLeft,
-  Share2
+  Share2,
+  ExternalLink
 } from 'lucide-react';
 import { formatRupees, formatFriendlyDate } from '../utils/format';
 import { VehicleType, TripType } from '../lib/supabase';
@@ -27,6 +28,8 @@ interface ConfirmationScreenProps {
   vehicleType: VehicleType;
   tripType: TripType;
   pickupWhen: string;
+  pickupLat?: number | null;
+  pickupLng?: number | null;
   onBookAnother: () => void;
   onCheckBooking?: (code: string, phone: string) => void;
 }
@@ -43,6 +46,8 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
   vehicleType,
   tripType,
   pickupWhen,
+  pickupLat,
+  pickupLng,
   onBookAnother,
   onCheckBooking,
 }) => {
@@ -227,6 +232,17 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
             <div>
               <p className="text-[11px] text-zinc-400">Pickup Address</p>
               <p className="text-zinc-200 font-medium">{pickupAddress}</p>
+              {pickupLat != null && pickupLng != null && (
+                <a
+                  href={`https://www.google.com/maps?q=${pickupLat},${pickupLng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors mt-1 underline underline-offset-2 cursor-pointer"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Open pickup in Maps</span>
+                </a>
+              )}
             </div>
           </div>
           <div className="flex items-start gap-2.5">

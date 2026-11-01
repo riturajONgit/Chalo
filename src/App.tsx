@@ -20,6 +20,8 @@ interface ConfirmedBooking {
   vehicleType: VehicleType;
   tripType: TripType;
   pickupWhen: string;
+  pickupLat?: number | null;
+  pickupLng?: number | null;
 }
 
 export default function App() {
@@ -149,6 +151,8 @@ export default function App() {
               vehicleType={confirmedBooking.vehicleType}
               tripType={confirmedBooking.tripType}
               pickupWhen={confirmedBooking.pickupWhen}
+              pickupLat={confirmedBooking.pickupLat}
+              pickupLng={confirmedBooking.pickupLng}
               onBookAnother={handleBookAnother}
               onCheckBooking={(code, phone) => {
                 setPrefilledLookup({ code, phone });
