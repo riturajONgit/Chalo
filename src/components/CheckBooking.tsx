@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, CHALO_WHATSAPP_NUMBER } from '../lib/supabase';
 import { formatRupees, formatISTSchedule, cleanPhone, isValidIndianPhone } from '../utils/format';
 import { 
   Search, 
@@ -16,7 +16,9 @@ import {
   RefreshCw,
   Phone,
   ShieldCheck,
-  FileQuestion
+  FileQuestion,
+  AlertTriangle,
+  MessageSquare
 } from 'lucide-react';
 
 export interface BookingLookupResult {
@@ -52,11 +54,20 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [booking, setBooking] = useState<BookingLookupResult | null>(null);
 
+  // Cancellation state
+  const [showCancelConfirm, setShowCancelConfirm] = useState<boolean>(false);
+  const [isCancelling, setIsCancelling] = useState<boolean>(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
+  const [is2HourRule, setIs2HourRule] = useState<boolean>(false);
+
   // Auto-format booking code: 6 alphanumeric uppercase characters
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
     setCode(raw);
     if (errorText) setErrorText(null);
+    setShowCancelConfirm(false);
+    setCancelError(null);
+    setIs2HourRule(false);
   };
 
   // Phone input: clean to 10 digits
@@ -64,6 +75,9 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
     const raw = e.target.value.replace(/\D/g, '').slice(0, 10);
     setPhone(raw);
     if (errorText) setErrorText(null);
+    setShowCancelConfirm(false);
+    setCancelError(null);
+    setIs2HourRule(false);
   };
 
   const cleanedPhone = cleanPhone(phone);
@@ -75,6 +89,9 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
     setIsLoading(true);
     setErrorText(null);
     setHasSearched(true);
+    setShowCancelConfirm(false);
+    setCancelError(null);
+    setIs2HourRule(false);
 
     try {
       const { data, error } = await supabase.rpc('lookup_booking', {
@@ -106,6 +123,81 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
     e.preventDefault();
     if (!isFormValid) return;
     performLookup(code, phone);
+  };
+
+  // Compute hoursUntilPickup = (scheduled_at - now) in hours
+  const hoursUntilPickup = (() => {
+    if (!booking?.scheduled_at) return null;
+    const scheduledTime = new Date(booking.scheduled_at).getTime();
+    if (isNaN(scheduledTime)) return null;
+    return (scheduledTime - Date.now()) / (1000 * 60 * 60);
+  })();
+
+  const isWithin2Hours = hoursUntilPickup !== null && hoursUntilPickup < 2;
+
+  const whatsappCancelUrl = `https://wa.me/${CHALO_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hello Chalo Support, I need to cancel booking #${booking?.code || code} (${booking?.from_city || 'Rewa'} to ${booking?.to_city || ''}). Phone: ${phone}`
+  )}`;
+
+  // Handle rider booking cancellation
+  const handleConfirmCancel = async () => {
+    if (!booking) return;
+
+    setIsCancelling(true);
+    setCancelError(null);
+    setIs2HourRule(false);
+
+    const lookupCode = code.trim().toUpperCase();
+    const lookupPhone = cleanPhone(phone);
+
+    try {
+      const { data, error } = await supabase.rpc('rider_cancel_booking', {
+        p_code: lookupCode,
+        p_phone: lookupPhone,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // Check if data returned an error payload
+      if (data && typeof data === 'object' && (data as any).error) {
+        throw new Error((data as any).error);
+      }
+
+      // Success: Optimistically set status to cancelled and refresh lookup
+      setBooking((prev) => (prev ? { ...prev, status: 'cancelled' } : null));
+      setShowCancelConfirm(false);
+      setCancelError(null);
+      setIs2HourRule(false);
+
+      // Refresh latest data from database
+      await performLookup(lookupCode, lookupPhone);
+    } catch (err: any) {
+      console.warn('rider_cancel_booking error:', err);
+      const rawMsg = err?.message || err?.error_description || 'Failed to cancel booking.';
+      const is2Hr = 
+        rawMsg.toLowerCase().includes('2 hour') || 
+        rawMsg.toLowerCase().includes('2-hour') || 
+        rawMsg.toLowerCase().includes('two hour') ||
+        rawMsg.toLowerCase().includes('within 2') ||
+        rawMsg.toLowerCase().includes('closed within') ||
+        isWithin2Hours;
+
+      if (is2Hr) {
+        setCancelError(
+          rawMsg.toLowerCase().includes('2 hour') || rawMsg.toLowerCase().includes('closed within')
+            ? rawMsg
+            : 'Cancellations are closed within 2 hours of pickup. Please call the Chalo team on WhatsApp.'
+        );
+        setIs2HourRule(true);
+      } else {
+        setCancelError(rawMsg);
+        setIs2HourRule(false);
+      }
+    } finally {
+      setIsCancelling(false);
+    }
   };
 
   // Status Badge Component
@@ -200,6 +292,11 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
         };
     }
   };
+
+  // Show "Cancel booking" button only when status is 'requested', 'assigned' or 'confirmed'
+  // Keep it out of completed and cancelled states
+  const statusLower = (booking?.status || '').toLowerCase();
+  const canCancel = ['requested', 'assigned', 'confirmed'].includes(statusLower);
 
   return (
     <div className="w-full max-w-xl mx-auto space-y-5 animate-in fade-in duration-200 pb-10">
@@ -479,7 +576,117 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
             </div>
           )}
 
-          {/* Quick Actions */}
+          {/* Cancel Booking Section (only when status is requested, assigned, or confirmed) */}
+          {canCancel && (
+            <div className="pt-1 space-y-3">
+              {!showCancelConfirm ? (
+                <div className="space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCancelConfirm(true);
+                      setCancelError(null);
+                      setIs2HourRule(false);
+                    }}
+                    className="w-full min-h-[44px] rounded-xl bg-red-950/30 hover:bg-red-900/40 active:bg-red-900/60 border border-red-500/30 text-red-300 hover:text-red-200 text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <XCircle className="w-4 h-4 text-red-400" />
+                    <span>Cancel booking</span>
+                  </button>
+
+                  {/* Note under button when hoursUntilPickup is less than 2 */}
+                  {isWithin2Hours && (
+                    <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs space-y-2.5 animate-in fade-in">
+                      <div className="flex items-start gap-2.5 text-amber-200">
+                        <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                        <p className="leading-relaxed">
+                          Cancellations are closed within 2 hours of pickup. To cancel now, message Chalo on WhatsApp.
+                        </p>
+                      </div>
+                      <a
+                        href={whatsappCancelUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full min-h-[44px] px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-semibold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md cursor-pointer"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        <span>Message Chalo on WhatsApp</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="p-4 rounded-xl bg-red-950/40 border border-red-500/30 space-y-3 animate-in fade-in">
+                  <div className="flex items-start gap-2.5">
+                    <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <div className="space-y-0.5">
+                      <h4 className="text-xs font-bold text-white">Cancel booking?</h4>
+                      <p className="text-xs text-zinc-300 leading-relaxed">
+                        If a driver is assigned, they will be notified.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Cancel Error Banner if cancellation RPC failed */}
+                  {cancelError && (
+                    <div className="p-3 rounded-lg bg-red-950/80 border border-red-500/50 text-xs text-red-200 space-y-2 animate-in fade-in">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <p className="leading-relaxed">{cancelError}</p>
+                      </div>
+
+                      {/* WhatsApp Button for 2-hour rule */}
+                      {(is2HourRule || isWithin2Hours) && (
+                        <a
+                          href={whatsappCancelUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full min-h-[44px] px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-semibold text-xs rounded-lg flex items-center justify-center gap-2 transition-colors shadow-md cursor-pointer mt-1"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                          <span>Message Chalo on WhatsApp</span>
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Actions: Yes, cancel & No, keep it */}
+                  <div className="flex items-center gap-2.5 pt-1">
+                    <button
+                      type="button"
+                      disabled={isCancelling}
+                      onClick={handleConfirmCancel}
+                      className="flex-1 min-h-[44px] rounded-xl bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-md shadow-red-950/40"
+                    >
+                      {isCancelling ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Cancelling booking...</span>
+                        </>
+                      ) : (
+                        <span>Yes, cancel</span>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={isCancelling}
+                      onClick={() => {
+                        setShowCancelConfirm(false);
+                        setCancelError(null);
+                        setIs2HourRule(false);
+                      }}
+                      className="flex-1 min-h-[44px] rounded-xl bg-white/10 hover:bg-white/15 active:bg-white/20 text-zinc-200 hover:text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-white/10"
+                    >
+                      <span>No, keep it</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Quick Navigation Actions */}
           <div className="pt-1 flex items-center gap-3">
             <button
               type="button"
@@ -497,6 +704,9 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
                 setPhone('');
                 setBooking(null);
                 setHasSearched(false);
+                setShowCancelConfirm(false);
+                setCancelError(null);
+                setIs2HourRule(false);
               }}
               className="min-h-[44px] px-4 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white border border-white/10 text-xs font-semibold transition-colors cursor-pointer"
             >

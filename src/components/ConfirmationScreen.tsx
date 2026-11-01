@@ -93,7 +93,7 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
     setTimeout(() => setShared(false), 2500);
   };
 
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+  const whatsappUrl = `https://wa.me/918319687057?text=${encodeURIComponent(shareText)}`;
 
   return (
     <div className="w-full max-w-xl mx-auto space-y-5 animate-in fade-in duration-300">

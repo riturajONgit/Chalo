@@ -4,7 +4,8 @@ import { supabase } from '../../lib/supabase';
 import { DriverAuth } from './DriverAuth';
 import { DriverStatus } from './DriverStatus';
 import { DriverOffers } from './DriverOffers';
-import { Loader2, ArrowLeft, LogOut, UserX, Car } from 'lucide-react';
+import { DriverProfileForm } from './DriverProfileForm';
+import { Loader2, ArrowLeft } from 'lucide-react';
 
 export interface OwnerData {
   id?: string;
@@ -31,15 +32,12 @@ export const DriverApp: React.FC<DriverAppProps> = ({ onNavigate }) => {
   const [hasCheckedOwner, setHasCheckedOwner] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [isRegisteringMissingProfile, setIsRegisteringMissingProfile] = useState<boolean>(false);
-
   // Clear all driver state
   const clearDriverState = useCallback(() => {
     setCurrentUser(null);
     setOwner(null);
     setVehicle(null);
     setHasCheckedOwner(false);
-    setIsRegisteringMissingProfile(false);
   }, []);
 
   // Fetch driver data for the currently authenticated user
@@ -163,85 +161,15 @@ export const DriverApp: React.FC<DriverAppProps> = ({ onNavigate }) => {
     );
   }
 
-  // 3. User is authenticated, but NO owners row exists -> show "No driver profile for this account"
-  // Starts with empty state and only shows database profile
+  // 3. User is authenticated, but NO owners row exists -> go straight to "Complete your driver profile" form
   if (!owner) {
     return (
-      <div className="w-full max-w-md mx-auto space-y-4 animate-in fade-in duration-200">
-        <button
-          type="button"
-          onClick={() => onNavigate('/')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-white transition-colors min-h-[44px] py-1 px-2 rounded-lg"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Booking</span>
-        </button>
-
-        {!isRegisteringMissingProfile ? (
-          <div className="bg-[#121820] border border-white/10 rounded-2xl p-6 sm:p-7 shadow-xl text-center space-y-5">
-            <div className="w-16 h-16 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto text-red-400">
-              <UserX className="w-8 h-8 stroke-[2]" />
-            </div>
-
-            <div className="space-y-1.5">
-              <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
-                No driver profile for this account
-              </h2>
-              <p className="text-xs text-zinc-400 max-w-xs mx-auto">
-                Signed in as <span className="text-zinc-200 font-mono font-semibold">{currentUser.email || 'authenticated user'}</span>. This account does not have an attached driver or vehicle profile.
-              </p>
-            </div>
-
-            <div className="p-3 rounded-xl bg-[#0b0f14] border border-white/5 text-xs text-zinc-400 text-left space-y-1.5">
-              <p className="font-semibold text-zinc-300">What would you like to do?</p>
-              <p>• Sign out to sign in with your driver partner credentials.</p>
-              <p>• Or register this account as a new Chalo driver partner.</p>
-            </div>
-
-            <div className="space-y-2.5 pt-2">
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="w-full min-h-[48px] rounded-xl bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-md shadow-red-950/40"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Sign Out</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsRegisteringMissingProfile(true)}
-                className="w-full min-h-[44px] rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-md shadow-emerald-950/30"
-              >
-                <Car className="w-4 h-4" />
-                <span>Register this account as a driver</span>
-              </button>
-
-              <div className="text-center pt-1">
-                <button
-                  type="button"
-                  onClick={handleSignOut}
-                  className="text-xs text-emerald-400 hover:text-emerald-300 underline underline-offset-4 min-h-[44px] px-2 inline-flex items-center cursor-pointer"
-                >
-                  Link to Driver Sign-Up
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <button
-              type="button"
-              onClick={() => setIsRegisteringMissingProfile(false)}
-              className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 p-1"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to Account Notice</span>
-            </button>
-            <DriverAuth initialMode="step2" onAuthComplete={() => checkDriverAuth()} />
-          </div>
-        )}
-      </div>
+      <DriverProfileForm
+        currentUser={currentUser}
+        onProfileCompleted={() => checkDriverAuth(true)}
+        onSignOut={handleSignOut}
+        onNavigateHome={() => onNavigate('/')}
+      />
     );
   }
 

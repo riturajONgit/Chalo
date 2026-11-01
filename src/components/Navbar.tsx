@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* WhatsApp Support affordance */}
           <a
-            href="https://wa.me/919425178000?text=Hello%20Chalo%20Cabs%2C%20I%20need%20assistance%20with%20an%20outstation%20booking%20from%20Rewa"
+            href="https://wa.me/918319687057?text=Hello%20Chalo%20Cabs%2C%20I%20need%20assistance%20with%20an%20outstation%20booking%20from%20Rewa"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 sm:px-3 sm:py-2 text-xs font-semibold text-zinc-200 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0"

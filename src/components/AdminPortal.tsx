@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdminQueue } from './AdminQueue';
 import { AdminDrivers } from './AdminDrivers';
 import { LogOut, Calendar, Users, Shield } from 'lucide-react';
@@ -8,7 +8,41 @@ interface AdminPortalProps {
 }
 
 export const AdminPortal: React.FC<AdminPortalProps> = ({ onSignOut }) => {
-  const [adminTab, setAdminTab] = useState<'bookings' | 'drivers'>('bookings');
+  // Read initial tab from URL query params (e.g. ?tab=drivers)
+  const [adminTab, setAdminTab] = useState<'bookings' | 'drivers'>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab')?.toLowerCase();
+      if (tab === 'drivers' || tab === 'bookings') {
+        return tab;
+      }
+    }
+    return 'bookings';
+  });
+
+  // Keep URL in sync when tab is selected
+  const handleTabChange = (tab: 'bookings' | 'drivers') => {
+    setAdminTab(tab);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', tab);
+      if (tab === 'bookings') {
+        url.searchParams.delete('filter');
+      }
+      window.history.replaceState({}, '', url.toString());
+    }
+  };
+
+  // Sync if URL didn't have tab specified initially
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.get('tab')) {
+        url.searchParams.set('tab', adminTab);
+        window.history.replaceState({}, '', url.toString());
+      }
+    }
+  }, [adminTab]);
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4 pb-12 animate-in fade-in duration-200">
@@ -45,7 +79,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onSignOut }) => {
         {/* 1. Tabs in the admin app: Bookings | Drivers */}
         <div className="grid grid-cols-2 p-1 bg-[#0b0f14] rounded-xl border border-white/10">
           <button
-            onClick={() => setAdminTab('bookings')}
+            onClick={() => handleTabChange('bookings')}
             className={`min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               adminTab === 'bookings'
                 ? 'bg-emerald-500 text-black shadow-md'
@@ -57,7 +91,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onSignOut }) => {
           </button>
 
           <button
-            onClick={() => setAdminTab('drivers')}
+            onClick={() => handleTabChange('drivers')}
             className={`min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               adminTab === 'drivers'
                 ? 'bg-emerald-500 text-black shadow-md'

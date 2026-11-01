@@ -22,8 +22,7 @@ import {
   DESTINATIONS, 
   FROM_CITY, 
   VehicleType, 
-  TripType,
-  getEstimatedFare
+  TripType
 } from '../lib/supabase';
 import { formatRupees, isValidIndianPhone, cleanPhone, formatFriendlyDate } from '../utils/format';
 
@@ -92,7 +91,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
   // Active destination route data
   const activeRoute = DESTINATIONS.find((d) => d.id === toCity) || DESTINATIONS[0];
 
-  // Fetch live fare quote via RPC with seamless fallback
+  // Fetch live fare quote via RPC - strictly required from quote_fare RPC, never hardcoded
   const fetchFare = useCallback(async (dest: string, vehicle: VehicleType, trip: TripType) => {
     setFareLoading(true);
     setFareError(null);
@@ -104,21 +103,19 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
         p_trip: trip,
       });
 
-      if (error) {
-        throw new Error(error.message || 'Failed to calculate fare');
+      if (error || data === null || data === undefined) {
+        throw new Error('Fare unavailable. Please check your connection and try again.');
       }
 
       const numericFare = typeof data === 'number' ? data : Number(data);
-      if (isNaN(numericFare)) {
-        throw new Error('Invalid fare returned');
+      if (isNaN(numericFare) || numericFare <= 0) {
+        throw new Error('Fare unavailable. Please check your connection and try again.');
       }
       setFare(numericFare);
+      setFareError(null);
     } catch (err: any) {
-      // Fallback to predetermined fare if offline or network connection interrupted
-      const estimated = getEstimatedFare(dest, vehicle, trip);
-      setFare(estimated);
-      // Informative notice without throwing a console.error exception
-      console.warn('Fare quote notice:', err?.message || err);
+      setFare(null);
+      setFareError('Fare unavailable. Please check your connection and try again.');
     } finally {
       setFareLoading(false);
     }
@@ -150,6 +147,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
     isPhoneValid &&
     isTimeValid &&
     fare !== null &&
+    !fareError &&
     !fareLoading &&
     !isSubmitting;
 
@@ -161,14 +159,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
     if (!isNameValid) return 'Enter your name';
     if (!isPhoneValid) return 'Enter a valid 10-digit Indian phone number';
     if (fareLoading) return 'Calculating fare...';
-    if (fare === null) return 'Waiting for fare quote';
+    if (fareError) return fareError;
+    if (fare === null) return 'Fare unavailable. Please check your connection and try again.';
     return null;
   };
 
   // Submit Handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid || fare === null) return;
+    if (!isFormValid || fare === null || Boolean(fareError)) return;
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -589,10 +588,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
       </div>
 
       {/* Live Fare Display Card */}
-      <div className="bg-[#121820] border border-emerald-500/30 rounded-2xl p-5 shadow-lg relative overflow-hidden">
-        <div className="flex items-center justify-between">
+      <div className={`bg-[#121820] border ${fareError ? 'border-red-500/40' : 'border-emerald-500/30'} rounded-2xl p-5 shadow-lg relative overflow-hidden`}>
+        <div className="flex items-center justify-between gap-4">
           <div>
-            <span className="text-xs uppercase font-bold tracking-wider text-emerald-400 block mb-0.5">
+            <span className={`text-xs uppercase font-bold tracking-wider ${fareError ? 'text-red-400' : 'text-emerald-400'} block mb-0.5`}>
               Guaranteed Upfront Fare
             </span>
             <p className="text-xs text-zinc-400">
@@ -600,31 +599,51 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
             </p>
           </div>
 
-          <div className="text-right">
+          <div className="text-right shrink-0">
             {fareLoading ? (
               <div className="flex items-center gap-2 text-zinc-400 py-1">
                 <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
                 <span className="text-sm font-medium">Calculating...</span>
               </div>
             ) : fareError ? (
-              <button
-                type="button"
-                onClick={() => fetchFare(toCity, vehicleType, tripType)}
-                className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1.5 py-1"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Retry calculation</span>
-              </button>
-            ) : (
+              <div className="text-right">
+                <span className="text-sm font-semibold text-red-400 block">Unavailable</span>
+                <button
+                  type="button"
+                  onClick={() => fetchFare(toCity, vehicleType, tripType)}
+                  className="text-xs text-emerald-400 hover:text-emerald-300 font-medium inline-flex items-center gap-1.5 mt-1 cursor-pointer"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Retry</span>
+                </button>
+              </div>
+            ) : fare !== null ? (
               <div>
                 <span className="text-3xl font-extrabold text-white tabular-nums tracking-tight">
                   {formatRupees(fare)}
                 </span>
                 <span className="block text-[10px] text-zinc-400 font-medium">All Inclusive</span>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
+
+        {/* Fare Unavailable Error Message */}
+        {fareError && (
+          <div className="mt-3.5 p-3 rounded-xl bg-red-950/40 border border-red-500/30 text-red-200 text-xs flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+              <span>Fare unavailable. Please check your connection and try again.</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => fetchFare(toCity, vehicleType, tripType)}
+              className="text-xs text-red-300 hover:text-white font-semibold underline underline-offset-2 shrink-0 cursor-pointer"
+            >
+              Retry
+            </button>
+          </div>
+        )}
 
         {/* Fare Inclusions */}
         <div className="mt-3.5 pt-3.5 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-zinc-300">
@@ -662,9 +681,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
       <div className="space-y-2 pt-1">
         <button
           type="submit"
-          disabled={!isFormValid || isSubmitting}
+          disabled={!isFormValid || isSubmitting || fare === null || Boolean(fareError)}
           className={`w-full min-h-[52px] rounded-xl font-bold text-base flex items-center justify-center gap-2.5 transition-all shadow-lg min-w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
-            isFormValid && !isSubmitting
+            isFormValid && !isSubmitting && fare !== null && !fareError
               ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer active:scale-[0.99]'
               : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
           }`}
@@ -677,7 +696,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
           ) : (
             <>
               <span>Book Cab Now</span>
-              {fare !== null && !fareLoading && (
+              {fare !== null && !fareLoading && !fareError && (
                 <span className="font-mono">· {formatRupees(fare)}</span>
               )}
             </>

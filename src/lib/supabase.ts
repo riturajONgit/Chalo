@@ -5,6 +5,9 @@ const SUPABASE_ANON_KEY = 'sb_publishable_hcoiqTbP8cGVqwxC5g0iDg_Poe-V6sW';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+export const CHALO_WHATSAPP_NUMBER = '918319687057';
+export const CHALO_WHATSAPP_DISPLAY = '+91 8319687057';
+
 export type VehicleType = 'sedan' | 'suv';
 export type TripType = 'one_way' | 'round_trip';
 

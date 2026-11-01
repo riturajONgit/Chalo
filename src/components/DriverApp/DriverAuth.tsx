@@ -12,8 +12,12 @@ import {
   AlertCircle, 
   CheckCircle2, 
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  Upload,
+  RefreshCw,
+  Check
 } from 'lucide-react';
+import { DOC_CONFIGS, DocType, validateDocFile } from './DriverDocUploads';
 
 export const VEHICLE_OPTIONS = [
   { value: 'sedan', label: 'Sedan' },
@@ -52,6 +56,153 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
+
+  // Document upload state for sign up and step 2
+  const [selectedFiles, setSelectedFiles] = useState<Partial<Record<DocType, File>>>({});
+  const [docErrors, setDocErrors] = useState<Partial<Record<DocType, string>>>({});
+
+  const handleDocFileSelect = (docType: DocType, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    const validationError = validateDocFile(file);
+    if (validationError) {
+      setDocErrors((prev) => ({ ...prev, [docType]: validationError }));
+      return;
+    }
+
+    setDocErrors((prev) => ({ ...prev, [docType]: undefined }));
+    setSelectedFiles((prev) => ({ ...prev, [docType]: file }));
+  };
+
+  const uploadSelectedDocuments = async (userId: string) => {
+    const entries = Object.entries(selectedFiles) as [DocType, File][];
+    for (const [docType, file] of entries) {
+      if (!file) continue;
+      const sanitized = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const uploadPath = `${userId}/${docType}-${Date.now()}-${sanitized}`;
+      
+      const { error: upErr } = await supabase.storage
+        .from('driver-docs')
+        .upload(uploadPath, file, { upsert: true });
+        
+      if (upErr) {
+        throw new Error(`Failed to upload ${docType.toUpperCase()}: ${upErr.message}`);
+      }
+
+      const { error: rpcErr } = await supabase.rpc('set_driver_document', {
+        p_doc_type: docType,
+        p_path: uploadPath,
+      });
+
+      if (rpcErr) {
+        throw new Error(`Failed to save ${docType.toUpperCase()}: ${rpcErr.message}`);
+      }
+
+      try {
+        const cacheKey = `chalo_driver_docs_${userId}`;
+        const existing = JSON.parse(localStorage.getItem(cacheKey) || '{}');
+        existing[docType] = { isUploaded: true, fileName: file.name, path: uploadPath };
+        localStorage.setItem(cacheKey, JSON.stringify(existing));
+      } catch {
+        // Ignore cache write error
+      }
+    }
+  };
+
+  const renderDocUploadCards = () => {
+    const uploadedCount = (Object.keys(selectedFiles) as DocType[]).filter((k) => Boolean(selectedFiles[k])).length;
+    const progress = Math.round((uploadedCount / 4) * 100);
+
+    return (
+      <div className="pt-2 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-white">
+            <FileText className="w-4 h-4 text-emerald-400" />
+            <span>Driver Documents</span>
+          </div>
+          <span className="text-[11px] font-mono font-bold text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+            {uploadedCount} of 4 uploaded
+          </span>
+        </div>
+
+        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
+          <p className="text-xs text-amber-200 font-medium leading-relaxed">
+            Upload all four documents. We review them before activating your account.
+          </p>
+          <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+            <div 
+              className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="text-[10px] text-zinc-400">PDF, JPG, PNG up to 5 MB</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {DOC_CONFIGS.map((config) => {
+            const file = selectedFiles[config.type];
+            const isSelected = Boolean(file);
+            const error = docErrors[config.type];
+
+            return (
+              <div 
+                key={config.type} 
+                className={`p-3 rounded-xl border text-xs transition-all ${
+                  isSelected 
+                    ? 'bg-emerald-950/20 border-emerald-500/30' 
+                    : 'bg-[#0b0f14] border-white/10'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-1.5">
+                  <div>
+                    <span className="font-bold text-white block">{config.title}</span>
+                    <span className="text-[10px] text-zinc-400">{config.description}</span>
+                  </div>
+                  {isSelected && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                      <span>Uploaded ✓</span>
+                    </span>
+                  )}
+                </div>
+
+                {error && (
+                  <p className="text-[11px] text-red-300 mt-1.5 flex items-start gap-1">
+                    <AlertCircle className="w-3 h-3 text-red-400 shrink-0 mt-0.5" />
+                    <span>{error}</span>
+                  </p>
+                )}
+
+                <div className="mt-2.5">
+                  <label className="cursor-pointer block">
+                    <input
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+                      className="hidden"
+                      onChange={(e) => handleDocFileSelect(config.type, e)}
+                    />
+                    {isSelected ? (
+                      <span className="w-full min-h-[36px] px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                        <RefreshCw className="w-3 h-3 text-zinc-400" />
+                        <span>Replace</span>
+                      </span>
+                    ) : (
+                      <span className="w-full min-h-[36px] px-2.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm">
+                        <Upload className="w-3 h-3 stroke-[2.5]" />
+                        <span>Upload</span>
+                      </span>
+                    )}
+                  </label>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   const cleanedPhone = cleanPhone(phone);
   const isPhoneValid = isValidIndianPhone(cleanedPhone);
@@ -112,6 +263,15 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
     setIsLoading(true);
 
     try {
+      try {
+        sessionStorage.setItem('chalo_driver_reg_name', name.trim());
+        sessionStorage.setItem('chalo_driver_reg_phone', phone.trim());
+        sessionStorage.setItem('chalo_driver_reg_vehicle_type', vehicleType);
+        sessionStorage.setItem('chalo_driver_reg_no', regNo.trim().toUpperCase());
+      } catch {
+        // Ignore
+      }
+
       // Step 1: supabase.auth.signUp({ email, password })
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
@@ -133,6 +293,20 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
 
       // Step 2: Session exists immediately -> call register_driver RPC
       await callRegisterDriver(name, phone, vehicleType, regNo);
+
+      try {
+        sessionStorage.removeItem('chalo_driver_reg_name');
+        sessionStorage.removeItem('chalo_driver_reg_phone');
+        sessionStorage.removeItem('chalo_driver_reg_vehicle_type');
+        sessionStorage.removeItem('chalo_driver_reg_no');
+      } catch {
+        // Ignore
+      }
+
+      // Step 3: Upload any documents selected during sign up
+      if (signUpData.user) {
+        await uploadSelectedDocuments(signUpData.user.id);
+      }
 
       // Successfully registered & signed in -> advance
       onAuthComplete();
@@ -165,6 +339,12 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
 
     try {
       await callRegisterDriver(name, phone, vehicleType, regNo);
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await uploadSelectedDocuments(user.id);
+      }
+
       onAuthComplete();
     } catch (err: any) {
       setErrorMessage(err?.message || 'Driver profile creation failed.');
@@ -216,14 +396,7 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
         console.warn('Error fetching owner profile:', ownerError);
       }
 
-      if (!owner) {
-        // Missing owner record: go to Step 2 to finish registration
-        setMode('step2');
-        setIsLoading(false);
-        return;
-      }
-
-      // Authenticated and owner row exists
+      // User is authenticated. Whether owner exists or not, notify parent to route to profile form or status/offers
       onAuthComplete();
     } catch (err: any) {
       setErrorMessage(err?.message || 'Sign in failed. Please try again.');
@@ -502,6 +675,9 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
               </div>
             </div>
 
+            {/* Document Uploads during Sign Up */}
+            {renderDocUploadCards()}
+
             {/* Submit */}
             <button
               type="submit"
@@ -601,6 +777,9 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                 />
               </div>
             </div>
+
+            {/* Document Uploads during Step 2 */}
+            {renderDocUploadCards()}
 
             <button
               type="submit"
