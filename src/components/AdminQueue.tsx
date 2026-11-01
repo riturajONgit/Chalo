@@ -228,35 +228,35 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
     const s = (status || '').toLowerCase();
     if (s === 'requested') {
       return (
-        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40">
           Requested
         </span>
       );
     }
     if (s === 'assigned') {
       return (
-        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40">
           Assigned
         </span>
       );
     }
     if (s === 'confirmed') {
       return (
-        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
           Confirmed
         </span>
       );
     }
     if (s === 'completed') {
       return (
-        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-zinc-700/50 text-zinc-300 border border-white/10">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
           Completed
         </span>
       );
     }
     if (s === 'cancelled') {
       return (
-        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/30">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40">
           Cancelled
         </span>
       );
@@ -272,17 +272,17 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Optional Top Header Strip if not rendered inside parent header */}
       {!hideHeader && (
-        <div className="flex items-center justify-between gap-3 bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5">
+        <div className="flex items-center justify-between gap-3 bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white">
+              <h1 className="text-[20px] font-bold tracking-tight text-white">
                 Booking Queue
               </h1>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40">
                 Admin
               </span>
             </div>
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-[#A3A3A3] mt-0.5">
               {bookings.length} total bookings · Rewa Outstation Fleet
             </p>
           </div>
@@ -291,17 +291,17 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
             <button
               onClick={() => loadData(true)}
               disabled={isRefreshing || isLoading}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-zinc-300 transition-colors border border-white/10 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
+              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-white transition-colors border border-white/20 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
               title="Refresh bookings"
               aria-label="Refresh bookings"
             >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-emerald-400' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-[#F59E0B]' : ''}`} />
             </button>
 
             {onSignOut && (
               <button
                 onClick={onSignOut}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-300 hover:text-red-200 bg-red-950/40 hover:bg-red-950/60 border border-red-500/30 rounded-xl transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#EF4444] hover:bg-[#EF4444]/10 border border-[#EF4444] rounded-xl transition-colors min-h-[44px] cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
@@ -313,7 +313,7 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
 
       {/* Global Success Notification */}
       {assignSuccess && (
-        <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+        <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{assignSuccess}</span>
         </div>
@@ -321,16 +321,16 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
 
       {/* Status update error */}
       {statusUpdateError && (
-        <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/30 text-red-200 text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
           <span>{statusUpdateError}</span>
         </div>
       )}
 
       {/* Fetch error state */}
       {error && (
-        <div className="p-4 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-sm flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-sm flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-[#EF4444] shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-semibold text-xs">Failed to load bookings</p>
             <p className="text-xs text-red-300 mt-0.5">{error}</p>
@@ -356,16 +356,16 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                 setActiveTab(tab);
                 setConfirmingCancelId(null);
               }}
-              className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
                 isActive
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'bg-[#121820] text-zinc-300 hover:text-white border border-white/5'
+                  ? 'bg-white text-black shadow-sm'
+                  : 'bg-[#141414] text-[#A3A3A3] hover:text-white border border-[#262626]'
               }`}
             >
               <span>{tab}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                  isActive ? 'bg-black/20 text-black' : 'bg-white/10 text-zinc-400'
+                  isActive ? 'bg-black/20 text-black' : 'bg-white/10 text-[#A3A3A3]'
                 }`}
               >
                 {count}
@@ -377,21 +377,21 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
 
       {/* Booking List */}
       {isLoading ? (
-        <div className="p-12 text-center bg-[#121820] border border-white/10 rounded-2xl space-y-3">
-          <Loader2 className="w-7 h-7 animate-spin text-emerald-400 mx-auto" />
-          <p className="text-sm text-zinc-400">Loading booking queue...</p>
+        <div className="p-12 text-center bg-[#141414] border border-[#262626] rounded-2xl space-y-3">
+          <Loader2 className="w-7 h-7 animate-spin text-[#F59E0B] mx-auto" />
+          <p className="text-sm text-[#A3A3A3]">Loading booking queue...</p>
         </div>
       ) : filteredBookings.length === 0 ? (
-        <div className="p-12 text-center bg-[#121820] border border-white/10 rounded-2xl space-y-2">
-          <p className="text-base font-semibold text-white">No {activeTab.toLowerCase()} bookings</p>
-          <p className="text-xs text-zinc-400">
+        <div className="p-12 text-center bg-[#141414] border border-[#262626] rounded-2xl space-y-2">
+          <p className="text-base font-bold text-white">No {activeTab.toLowerCase()} bookings</p>
+          <p className="text-xs text-[#A3A3A3]">
             {activeTab === 'All'
               ? 'No outstation bookings have been requested yet.'
               : `There are currently no bookings with status "${activeTab}".`}
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {filteredBookings.map((booking) => {
             const riderName = booking.rider_name || booking.name || 'Anonymous Rider';
             const riderPhone = booking.rider_phone || booking.phone || 'N/A';
@@ -432,36 +432,69 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
             return (
               <div
                 key={booking.id}
-                className={`bg-[#121820] border rounded-2xl p-4 sm:p-5 transition-all shadow-md ${
-                  isExpanded ? 'border-emerald-500/60 ring-1 ring-emerald-500/40' : 'border-white/10 hover:border-white/20'
+                className={`bg-[#141414] border rounded-2xl p-4 sm:p-5 transition-all shadow-md ${
+                  isExpanded ? 'border-white/40 ring-1 ring-white/20' : 'border-[#262626] hover:border-white/20'
                 }`}
               >
-                {/* Header row: Code, Route, Status, Fare */}
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm sm:text-base font-extrabold text-emerald-400 tracking-wider">
-                        #{booking.code}
-                      </span>
-                      {getStatusBadge(booking.status)}
-                    </div>
-                    <p className="text-sm font-bold text-white mt-1">
-                      {fromCity} ➔ {toCity}
-                    </p>
-                    <p className="text-xs text-zinc-400 mt-0.5">
-                      {tripType} · {vehicleType}
-                    </p>
+                {/* Header row: Code, Status, and Vehicle Pill */}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold text-white bg-white/10 border border-white/20 px-2 py-0.5 rounded-md">
+                      #{booking.code}
+                    </span>
+                    {getStatusBadge(booking.status)}
                   </div>
 
+                  {/* Vehicle Pill */}
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/15 text-[11px] font-bold text-white tracking-wider">
+                    <Car className="w-3 h-3 text-[#A3A3A3]" />
+                    <span>{vehicleType}</span>
+                    <span className="text-[#A3A3A3] font-normal">· {tripType}</span>
+                  </span>
+                </div>
+
+                {/* Route Line & Fare: route line on left, 32px saffron fare on right */}
+                <div className="flex items-start justify-between gap-4 pt-3">
+                  <div className="flex gap-3">
+                    {/* Visual Route Line: filled dot, vertical line, hollow dot */}
+                    <div className="flex flex-col items-center pt-1.5">
+                      <div className="w-3 h-3 rounded-full bg-white ring-4 ring-white/10 shrink-0" />
+                      <div className="w-0.5 h-10 bg-[#262626] my-1" />
+                      <div className="w-3 h-3 rounded-full border-2 border-white bg-[#141414] shrink-0" />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
+                          Pickup
+                        </div>
+                        <div className="text-base font-bold text-white leading-tight">
+                          {fromCity}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
+                          Drop
+                        </div>
+                        <div className="text-base font-bold text-white leading-tight">
+                          {toCity}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Fare on the right, large 32px in saffron */}
                   <div className="text-right shrink-0">
-                    <span className="text-lg sm:text-xl font-extrabold text-white tabular-nums tracking-tight">
+                    <div className="text-[32px] font-bold text-[#F59E0B] tabular-nums leading-none">
                       {displayFare}
-                    </span>
-                    <p className="text-[11px] text-zinc-400">Guaranteed Fare</p>
+                    </div>
+                    <div className="text-[11px] text-[#A3A3A3] uppercase tracking-wider font-semibold mt-1">
+                      Guaranteed fare
+                    </div>
                   </div>
                 </div>
 
-                <div className="h-px bg-white/5 my-3" />
+                <div className="h-px bg-[#262626] my-3" />
 
                 {/* Rider & Schedule info */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
@@ -488,17 +521,17 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
 
                 {/* Pickup & Drop Addresses */}
                 {(booking.pickup_address || booking.drop_address) && (
-                  <div className="mt-3 pt-3 border-t border-white/5 space-y-1.5 text-xs text-zinc-400">
+                  <div className="mt-3 p-3 rounded-xl bg-[#0A0A0A] border border-[#262626] space-y-1.5 text-xs text-[#A3A3A3]">
                     {booking.pickup_address && (
                       <p className="flex items-start gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                        <span className="text-zinc-300"><strong className="text-zinc-400">Pickup:</strong> {booking.pickup_address}</span>
+                        <MapPin className="w-3.5 h-3.5 text-white shrink-0 mt-0.5" />
+                        <span className="text-neutral-200"><strong className="text-[#A3A3A3]">Pickup:</strong> {booking.pickup_address}</span>
                       </p>
                     )}
                     {booking.drop_address && (
                       <p className="flex items-start gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-white shrink-0 mt-0.5" />
-                        <span className="text-zinc-300"><strong className="text-zinc-400">Drop:</strong> {booking.drop_address}</span>
+                        <MapPin className="w-3.5 h-3.5 text-[#A3A3A3] shrink-0 mt-0.5" />
+                        <span className="text-neutral-200"><strong className="text-[#A3A3A3]">Drop:</strong> {booking.drop_address}</span>
                       </p>
                     )}
                   </div>
@@ -506,9 +539,9 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
 
                 {/* Confirmation Box for Cancellation */}
                 {isConfirmingCancel && (
-                  <div className="mt-4 pt-3 border-t border-white/10 p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 space-y-2 animate-in fade-in">
+                  <div className="mt-4 pt-3 border-t border-[#262626] p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 space-y-2 animate-in fade-in">
                     <div className="flex items-center gap-2 text-xs text-red-200 font-semibold">
-                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                      <AlertTriangle className="w-4 h-4 text-[#EF4444] shrink-0" />
                       <span>Are you sure you want to cancel booking #{booking.code}?</span>
                     </div>
                     <div className="flex items-center gap-2 pt-1">
@@ -516,14 +549,14 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                         type="button"
                         disabled={isProcessingThisBooking}
                         onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
-                        className="min-h-[44px] px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="min-h-[44px] px-3.5 py-1.5 bg-[#EF4444] hover:bg-red-600 text-white font-bold text-xs rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
                       >
                         {isProcessingThisBooking ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         ) : (
                           <>
                             <X className="w-3.5 h-3.5" />
-                            <span>Confirm Cancel</span>
+                            <span>Yes, cancel</span>
                           </>
                         )}
                       </button>
@@ -531,9 +564,9 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                         type="button"
                         disabled={isProcessingThisBooking}
                         onClick={() => setConfirmingCancelId(null)}
-                        className="min-h-[44px] px-3.5 py-1.5 bg-white/10 hover:bg-white/15 text-zinc-200 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                        className="min-h-[44px] px-3.5 py-1.5 bg-transparent border border-white/20 text-white text-xs font-medium hover:bg-white/5 rounded-xl transition-colors cursor-pointer"
                       >
-                        Back
+                        No, keep it
                       </button>
                     </div>
                   </div>
@@ -541,11 +574,11 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
 
                 {/* Action Controls */}
                 {!isConfirmingCancel && (
-                  <div className="mt-4 pt-3 border-t border-white/10 space-y-3">
+                  <div className="mt-4 pt-3 border-t border-[#262626] space-y-3">
                     {/* Error text if action on this booking fails */}
                     {statusUpdateError && cardErrorBookingId === booking.id && (
-                      <div className="p-3 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2 animate-in fade-in">
-                        <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
+                      <div className="p-3 rounded-xl bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-xs flex items-start gap-2">
+                        <AlertCircle className="w-3.5 h-3.5 text-[#EF4444] shrink-0 mt-0.5" />
                         <span>{statusUpdateError}</span>
                       </div>
                     )}
@@ -558,7 +591,7 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                           type="button"
                           disabled={isProcessingThisBooking}
                           onClick={() => handleUpdateBookingStatus(booking.id, 'completed')}
-                          className="min-h-[44px] px-3.5 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+                          className="min-h-[44px] px-3.5 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
                         >
                           {isProcessingThisBooking ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -571,15 +604,15 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                         </button>
                       )}
 
-                      {/* Cancel button */}
+                      {/* Cancel button: red outline, red text */}
                       {canCancel && (
                         <button
                           type="button"
                           disabled={isProcessingThisBooking}
                           onClick={() => setConfirmingCancelId(booking.id)}
-                          className="min-h-[44px] px-3.5 py-2 bg-white/5 hover:bg-red-950/40 border border-white/10 hover:border-red-500/40 text-zinc-300 hover:text-red-300 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+                          className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
                         >
-                          <XCircle className="w-3.5 h-3.5 text-red-400" />
+                          <XCircle className="w-3.5 h-3.5 text-[#EF4444]" />
                           <span>Cancel Booking</span>
                         </button>
                       )}
@@ -595,51 +628,51 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                               setAssignError(null);
                               setSelectedVehicleId(matchingVehicles[0]?.id || '');
                             }}
-                            className="w-full min-h-[44px] px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                            className="w-full min-h-[48px] px-4 py-2 bg-transparent hover:bg-white/5 border border-white/20 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
                           >
-                            <Car className="w-4 h-4 text-emerald-400" />
+                            <Car className="w-4 h-4 text-[#F59E0B]" />
                             <span>Tap to Assign Vehicle</span>
                             <ChevronDown className="w-4 h-4 ml-auto" />
                           </button>
                         ) : (
-                          <div className="space-y-3 bg-[#0b0f14] p-3.5 rounded-xl border border-emerald-500/40">
+                          <div className="space-y-3 bg-[#0A0A0A] p-4 rounded-xl border border-[#262626]">
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                                <Car className="w-4 h-4 text-emerald-400" />
+                                <Car className="w-4 h-4 text-[#F59E0B]" />
                                 <span>Assign Approved Vehicle</span>
                               </span>
                               <button
                                 onClick={() => setSelectedBookingId(null)}
-                                className="text-xs text-zinc-400 hover:text-white p-1 cursor-pointer"
+                                className="text-xs text-[#A3A3A3] hover:text-white p-1 cursor-pointer"
                               >
                                 Cancel
                               </button>
                             </div>
 
                             {assignError && (
-                              <div className="p-2.5 rounded-lg bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2">
-                                <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
+                              <div className="p-2.5 rounded-lg bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-xs flex items-start gap-2">
+                                <AlertCircle className="w-3.5 h-3.5 text-[#EF4444] shrink-0 mt-0.5" />
                                 <span>{assignError}</span>
                               </div>
                             )}
 
                             {matchingVehicles.length === 0 ? (
-                              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium">
+                              <div className="p-3.5 rounded-xl bg-[#141414] border border-[#F59E0B]/30 text-amber-200 text-xs font-medium">
                                 No approved {bookingVehicleType} drivers available
                               </div>
                             ) : (
                               <div className="space-y-2">
-                                <label className="block text-[11px] font-medium text-zinc-400">
+                                <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
                                   Select Approved {bookingVehicleType.toUpperCase()} from Fleet
                                 </label>
                                 <select
                                   value={selectedVehicleId}
                                   onChange={(e) => setSelectedVehicleId(e.target.value)}
-                                  className="w-full px-3 py-2.5 rounded-lg bg-[#121820] border border-white/20 text-white font-medium text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                                  className="w-full px-3.5 py-3 rounded-xl bg-[#141414] border border-[#262626] text-white font-medium text-xs focus:outline-none focus:border-white min-h-[48px]"
                                 >
                                   <option value="">-- Choose Approved Vehicle --</option>
                                   {matchingVehicles.map((v) => (
-                                    <option key={v.id} value={v.id}>
+                                    <option key={v.id} value={v.id} className="bg-[#141414] text-white">
                                       {v.reg_no} · {(v.vehicle_type || 'Cab').toUpperCase()}
                                     </option>
                                   ))}
@@ -648,10 +681,10 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
                                 <button
                                   onClick={() => handleAssignVehicle(booking)}
                                   disabled={!selectedVehicleId || isAssigning}
-                                  className={`w-full min-h-[44px] rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                                  className={`w-full h-[52px] rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
                                     selectedVehicleId && !isAssigning
-                                      ? 'bg-emerald-500 hover:bg-emerald-400 text-black cursor-pointer shadow-md'
-                                      : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                                      ? 'bg-white hover:bg-neutral-200 text-black cursor-pointer shadow-md'
+                                      : 'bg-[#262626] text-[#A3A3A3] cursor-not-allowed'
                                   }`}
                                 >
                                   {isAssigning ? (
@@ -682,3 +715,4 @@ export const AdminQueue: React.FC<AdminQueueProps> = ({ onSignOut, hideHeader = 
     </div>
   );
 };
+export default AdminQueue;

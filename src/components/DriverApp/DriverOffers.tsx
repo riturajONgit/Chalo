@@ -219,20 +219,20 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
       )}
 
       {/* Driver Header Strip */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-lg space-y-3">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 shadow-lg space-y-4">
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-white">{owner.name}</span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              <span className="text-[20px] font-bold tracking-tight text-white">{owner.name}</span>
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#22c55e]/15 text-[#22c55e] border border-[#22c55e]/30">
                 <CheckCircle2 className="w-3 h-3" />
-                <span>You're approved</span>
+                <span>Approved</span>
               </span>
             </div>
 
             {vehicle && (
-              <p className="text-xs text-zinc-400 mt-1 flex items-center gap-2">
-                <span className="font-mono text-zinc-200 font-bold">{vehicle.reg_no}</span>
+              <p className="text-xs text-[#A3A3A3] mt-1 flex items-center gap-2">
+                <span className="font-mono text-white font-bold">{vehicle.reg_no}</span>
                 <span>·</span>
                 <span className="uppercase">{vehicle.vehicle_type}</span>
               </p>
@@ -244,17 +244,17 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
             <button
               onClick={() => fetchOffersOrTrips(true)}
               disabled={isRefreshing || isLoading}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-zinc-300 transition-colors border border-white/10 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
+              className="p-2.5 rounded-xl bg-transparent hover:bg-white/5 active:bg-white/10 text-white transition-colors border border-white/20 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
               title="Refresh"
               aria-label="Refresh"
             >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-emerald-400' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-[#F59E0B]' : ''}`} />
             </button>
 
             {/* Sign Out Button */}
             <button
               onClick={onSignOut}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-red-300 hover:text-red-200 bg-red-950/40 hover:bg-red-950/60 border border-red-500/30 rounded-xl transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-white bg-transparent hover:bg-white/5 border border-white/20 rounded-xl transition-colors min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sign Out</span>
@@ -263,13 +263,13 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
         </div>
 
         {/* Navigation Tabs: Offers Inbox vs Accepted Trips */}
-        <div className="grid grid-cols-2 p-1 bg-[#0b0f14] rounded-xl border border-white/10">
+        <div className="grid grid-cols-2 p-1 bg-[#0A0A0A] rounded-xl border border-[#262626]">
           <button
             onClick={() => setActiveTab('offered')}
-            className={`min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            className={`min-h-[40px] py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === 'offered'
-                ? 'bg-emerald-500 text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-[#A3A3A3] hover:text-white'
             }`}
           >
             <span>Offers Inbox</span>
@@ -281,10 +281,10 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('accepted')}
-            className={`min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            className={`min-h-[40px] py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeTab === 'accepted'
-                ? 'bg-emerald-500 text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-[#A3A3A3] hover:text-white'
             }`}
           >
             <span>Accepted Trips</span>
@@ -299,34 +299,34 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
 
       {/* Notifications */}
       {successMessage && (
-        <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs font-semibold flex items-center gap-2.5 animate-in fade-in">
+        <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2.5">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{successMessage}</span>
         </div>
       )}
 
       {errorMessage && (
-        <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/30 text-red-300 text-xs flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {/* List content */}
       {isLoading ? (
-        <div className="p-12 text-center bg-[#121820] border border-white/10 rounded-2xl space-y-3">
-          <Loader2 className="w-7 h-7 animate-spin text-emerald-400 mx-auto" />
-          <p className="text-sm text-zinc-400">Loading {activeTab === 'offered' ? 'offers' : 'trips'}...</p>
+        <div className="p-12 text-center bg-[#141414] border border-[#262626] rounded-2xl space-y-3">
+          <Loader2 className="w-7 h-7 animate-spin text-[#F59E0B] mx-auto" />
+          <p className="text-sm text-[#A3A3A3]">Loading {activeTab === 'offered' ? 'offers' : 'trips'}...</p>
         </div>
       ) : items.length === 0 ? (
-        <div className="p-12 text-center bg-[#121820] border border-white/10 rounded-2xl space-y-3">
-          <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-zinc-500">
+        <div className="p-12 text-center bg-[#141414] border border-[#262626] rounded-2xl space-y-3">
+          <div className="w-12 h-12 rounded-full bg-white/5 border border-[#262626] flex items-center justify-center mx-auto text-[#A3A3A3]">
             <Car className="w-6 h-6" />
           </div>
-          <p className="text-base font-semibold text-white">
+          <p className="text-base font-bold text-white">
             {activeTab === 'offered' ? 'No offers right now' : 'No accepted trips yet'}
           </p>
-          <p className="text-xs text-zinc-400 max-w-xs mx-auto">
+          <p className="text-xs text-[#A3A3A3] max-w-xs mx-auto">
             {activeTab === 'offered'
               ? 'New outstation ride requests assigned to your vehicle will appear here. Pull down to refresh.'
               : 'Trip offers you accept will show here along with rider name and phone.'}
@@ -334,7 +334,7 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
           {activeTab === 'offered' && (
             <button
               onClick={() => fetchOffersOrTrips(true)}
-              className="mt-2 text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline inline-flex items-center gap-1.5 cursor-pointer py-1"
+              className="mt-2 text-xs font-bold text-[#F59E0B] hover:text-[#fbbf24] inline-flex items-center gap-1.5 cursor-pointer py-1"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Check for New Offers</span>
@@ -351,7 +351,6 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
             // 1. Title: from_city → to_city
             const fromCity = row.from_city || 'Rewa';
             const toCity = row.to_city || '';
-            const routeTitle = toCity ? `${fromCity} → ${toCity}` : fromCity;
 
             // 2. Badge: code
             const bookingCode = row.code || '';
@@ -361,9 +360,6 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
               ? 'Round Trip' 
               : 'One Way';
             const vehicleTypeLabel = (row.vehicle_type || '').toUpperCase();
-            const tripLine = vehicleTypeLabel 
-              ? `${tripTypeLabel} · ${vehicleTypeLabel}` 
-              : tripTypeLabel;
 
             // 4. Scheduled pickup: format scheduled_at in IST
             const scheduledFormatted = row.scheduled_at 
@@ -374,7 +370,7 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
             const pickupAddr = row.pickup_address || '';
             const dropAddr = row.drop_address || '';
 
-            // 6. Fare: fare_quote as ₹1,234. Show "₹--" only when fare_quote is null. Label it "Guaranteed Fare"
+            // 6. Fare: fare_quote as ₹1,234. Show "₹--" only when fare_quote is null. Label it "Guaranteed fare"
             const fareQuote = row.fare_quote;
             const displayFare = fareQuote !== null && fareQuote !== undefined
               ? formatRupees(fareQuote)
@@ -383,71 +379,100 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
             return (
               <div
                 key={row.assignment_id}
-                className="bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-4 shadow-lg hover:border-white/20 transition-all"
+                className="bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 space-y-4 shadow-lg hover:border-white/20 transition-all"
               >
-                {/* Route & Fare Header */}
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    {/* Badges: code & booking status */}
-                    <div className="flex items-center gap-2">
-                      {bookingCode && (
-                        <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2 py-0.5 rounded">
-                          {bookingCode}
+                {/* Header row: Status badges and Vehicle Pill */}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    {bookingCode && (
+                      <span className="text-xs font-mono font-bold text-white bg-white/10 border border-white/20 px-2 py-0.5 rounded-md">
+                        {bookingCode}
+                      </span>
+                    )}
+                    {isAcceptedView ? (
+                      bookingStatus === 'confirmed' ? (
+                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                          Confirmed
                         </span>
-                      )}
-                      {isAcceptedView ? (
-                        bookingStatus === 'confirmed' ? (
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                            Confirmed
-                          </span>
-                        ) : bookingStatus === 'completed' ? (
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
-                            Completed
-                          </span>
-                        ) : bookingStatus === 'cancelled' ? (
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40">
-                            Cancelled
-                          </span>
-                        ) : (
-                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 capitalize">
-                            {row.booking_status || 'Trip'}
-                          </span>
-                        )
+                      ) : bookingStatus === 'completed' ? (
+                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                          Completed
+                        </span>
+                      ) : bookingStatus === 'cancelled' ? (
+                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40">
+                          Cancelled
+                        </span>
                       ) : (
-                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
-                          New Offer
+                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 capitalize">
+                          {row.booking_status || 'Trip'}
                         </span>
-                      )}
-                    </div>
-
-                    {/* Title: from_city → to_city */}
-                    <h2 className="text-base font-extrabold text-white mt-1.5">
-                      {routeTitle}
-                    </h2>
-
-                    {/* Trip line: trip_type · vehicle_type in uppercase */}
-                    <p className="text-xs text-zinc-400 mt-0.5">
-                      {tripLine}
-                    </p>
+                      )
+                    ) : (
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 animate-pulse">
+                        New Offer
+                      </span>
+                    )}
                   </div>
 
-                  {/* Fare: fare_quote as ₹1,234. Label it "Guaranteed Fare" */}
-                  <div className="text-right shrink-0">
-                    <span className="text-xl font-extrabold text-emerald-400 tabular-nums">
-                      {displayFare}
+                  {/* Vehicle Pill */}
+                  {vehicleTypeLabel && (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/15 text-[11px] font-bold text-white tracking-wider">
+                      <Car className="w-3 h-3 text-[#A3A3A3]" />
+                      <span>{vehicleTypeLabel}</span>
+                      <span className="text-[#A3A3A3] font-normal">· {tripTypeLabel}</span>
                     </span>
-                    <p className="text-[10px] text-zinc-400 font-medium">Guaranteed Fare</p>
+                  )}
+                </div>
+
+                {/* Route Line & Fare: route line on left, 32px saffron fare on right */}
+                <div className="flex items-start justify-between gap-4 pt-1">
+                  <div className="flex gap-3">
+                    {/* Visual Route Line: filled dot, vertical line, hollow dot */}
+                    <div className="flex flex-col items-center pt-1.5">
+                      <div className="w-3 h-3 rounded-full bg-white ring-4 ring-white/10 shrink-0" />
+                      <div className="w-0.5 h-10 bg-[#262626] my-1" />
+                      <div className="w-3 h-3 rounded-full border-2 border-white bg-[#141414] shrink-0" />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
+                          Pickup
+                        </div>
+                        <div className="text-base font-bold text-white leading-tight">
+                          {fromCity}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
+                          Drop
+                        </div>
+                        <div className="text-base font-bold text-white leading-tight">
+                          {toCity || 'Outstation'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Fare on the right, large 32px in saffron */}
+                  <div className="text-right shrink-0">
+                    <div className="text-[32px] font-bold text-[#F59E0B] tabular-nums leading-none">
+                      {displayFare}
+                    </div>
+                    <div className="text-[11px] text-[#A3A3A3] uppercase tracking-wider font-semibold mt-1">
+                      Guaranteed fare
+                    </div>
                   </div>
                 </div>
 
-                <div className="h-px bg-white/5" />
+                <div className="h-px bg-[#262626]" />
 
                 {/* Scheduled pickup: formatted in IST */}
                 {scheduledFormatted && (
                   <div className="flex items-center gap-2.5 text-xs text-zinc-300">
-                    <Calendar className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <Calendar className="w-4 h-4 text-[#F59E0B] shrink-0" />
                     <div>
-                      <span className="text-zinc-500 block text-[10px] uppercase font-semibold">Scheduled Pickup</span>
+                      <span className="text-[#A3A3A3] block text-[11px] uppercase font-semibold tracking-wider">Scheduled Pickup</span>
                       <span className="font-semibold text-white">
                         {scheduledFormatted}
                       </span>
@@ -457,19 +482,19 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
 
                 {/* Addresses: pickup_address and drop_address */}
                 {(pickupAddr || dropAddr) && (
-                  <div className="space-y-2 text-xs">
+                  <div className="space-y-2 text-xs bg-[#0A0A0A] p-3 rounded-xl border border-[#262626]">
                     {pickupAddr && (
                       <div className="flex items-start gap-2.5">
-                        <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <MapPin className="w-4 h-4 text-white shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-zinc-500 block text-[10px] uppercase font-semibold">Pickup Address</span>
-                          <span className="text-zinc-200">{pickupAddr}</span>
+                          <span className="text-[#A3A3A3] block text-[11px] uppercase font-semibold tracking-wider">Pickup Address</span>
+                          <span className="text-neutral-200">{pickupAddr}</span>
                           {row.pickup_lat != null && row.pickup_lng != null && (
                             <a
                               href={`https://www.google.com/maps?q=${row.pickup_lat},${row.pickup_lng}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors mt-1 underline underline-offset-2 cursor-pointer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F59E0B] hover:text-[#fbbf24] transition-colors mt-1 underline underline-offset-2 cursor-pointer"
                             >
                               <ExternalLink className="w-3.5 h-3.5" />
                               <span>Open pickup in Maps</span>
@@ -481,10 +506,10 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
 
                     {dropAddr && (
                       <div className="flex items-start gap-2.5">
-                        <MapPin className="w-4 h-4 text-white shrink-0 mt-0.5" />
+                        <MapPin className="w-4 h-4 text-[#A3A3A3] shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-zinc-500 block text-[10px] uppercase font-semibold">Drop Address</span>
-                          <span className="text-zinc-200">{dropAddr}</span>
+                          <span className="text-[#A3A3A3] block text-[11px] uppercase font-semibold tracking-wider">Drop Address</span>
+                          <span className="text-neutral-200">{dropAddr}</span>
                         </div>
                       </div>
                     )}
@@ -494,13 +519,13 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                 {/* Rider details: shown in Accepted Trips strictly for confirmed trips; hidden when completed, cancelled, or not confirmed */}
                 {isAcceptedView && bookingStatus === 'confirmed' && (
                   <>
-                    <div className="h-px bg-white/5" />
-                    <div className="bg-[#0b0f14] p-3 rounded-xl border border-emerald-500/30 space-y-2 text-xs animate-in fade-in">
+                    <div className="h-px bg-[#262626]" />
+                    <div className="bg-[#0A0A0A] p-3 rounded-xl border border-emerald-500/30 space-y-2 text-xs animate-in fade-in">
                       <div className="flex items-center justify-between flex-wrap gap-2">
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4 text-emerald-400" />
                           <div>
-                            <span className="text-zinc-500 text-[10px] block">Rider Name</span>
+                            <span className="text-[#A3A3A3] text-[11px] uppercase font-semibold block tracking-wider">Rider Name</span>
                             <span className="font-bold text-white text-sm">{row.rider_name || 'Rider'}</span>
                           </div>
                         </div>
@@ -509,7 +534,7 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                           <div className="flex items-center gap-2">
                             <a
                               href={`tel:${row.rider_phone}`}
-                              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white font-mono text-xs border border-white/10 min-h-[44px]"
+                              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white font-mono text-xs border border-white/20 min-h-[44px]"
                             >
                               <Phone className="w-3.5 h-3.5 text-emerald-400" />
                               <span>+91 {row.rider_phone}</span>
@@ -521,7 +546,7 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                               )}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                              className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
                               title="Chat on WhatsApp"
                             >
                               <MessageSquare className="w-4 h-4" />
@@ -537,14 +562,14 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                 {isAcceptedView && bookingStatus === 'confirmed' && (
                   <div className="pt-1">
                     {cancelError && cancelError.id === row.assignment_id && (
-                      <div className="mb-2 p-2.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2 animate-in fade-in">
-                        <AlertCircle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" />
+                      <div className="mb-2 p-2.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-xs flex items-start gap-2">
+                        <AlertCircle className="w-3.5 h-3.5 text-[#EF4444] shrink-0 mt-0.5" />
                         <span>{cancelError.message}</span>
                       </div>
                     )}
 
                     {confirmCancelAssignmentId === row.assignment_id ? (
-                      <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 space-y-3 animate-in fade-in">
+                      <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 space-y-3">
                         <p className="text-xs text-red-200 font-medium leading-relaxed">
                           Cancel this trip? It will go back to the admin for reassignment.
                         </p>
@@ -556,15 +581,15 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                               setConfirmCancelAssignmentId(null);
                               setCancelError(null);
                             }}
-                            className="min-h-[42px] px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-zinc-200 text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer"
+                            className="min-h-[44px] px-3 py-1.5 rounded-xl bg-transparent border border-white/20 text-white text-xs font-medium hover:bg-white/5 flex items-center justify-center transition-colors cursor-pointer"
                           >
-                            No
+                            No, keep it
                           </button>
                           <button
                             type="button"
                             disabled={isProcessing}
                             onClick={() => handleDriverCancelTrip(row.assignment_id)}
-                            className="min-h-[42px] px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                            className="min-h-[44px] px-3 py-1.5 rounded-xl border border-[#EF4444] bg-[#EF4444] hover:bg-red-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                           >
                             {isProcessing ? (
                               <>
@@ -572,7 +597,7 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                                 <span>Cancelling...</span>
                               </>
                             ) : (
-                              <span>Yes</span>
+                              <span>Yes, cancel</span>
                             )}
                           </button>
                         </div>
@@ -585,7 +610,7 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                           setConfirmCancelAssignmentId(row.assignment_id);
                           setCancelError(null);
                         }}
-                        className="w-full min-h-[44px] rounded-xl bg-red-950/25 hover:bg-red-950/50 active:bg-red-950/70 border border-red-500/30 hover:border-red-500/50 text-red-300 hover:text-red-200 font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                        className="w-full min-h-[48px] rounded-xl border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
                       >
                         <X className="w-3.5 h-3.5" />
                         <span>Cancel trip</span>
@@ -597,12 +622,12 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                 {/* Accept / Decline Action Buttons (Shown strictly in Offers Inbox) */}
                 {!isAcceptedView && (
                   <div className="grid grid-cols-2 gap-3 pt-1">
-                    {/* Decline Button: respond_to_offer action='decline' */}
+                    {/* Decline Button: secondary border-white/20 */}
                     <button
                       type="button"
                       disabled={isProcessing}
                       onClick={() => handleRespond(row.assignment_id, 'decline')}
-                      className="min-h-[46px] rounded-xl bg-white/5 hover:bg-red-950/40 active:bg-red-950/60 border border-white/10 hover:border-red-500/40 text-zinc-300 hover:text-red-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      className="min-h-[52px] rounded-xl bg-transparent border border-white/20 text-white hover:bg-white/5 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
                       {isProcessing ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -614,12 +639,12 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
                       )}
                     </button>
 
-                    {/* Accept Button: respond_to_offer action='accept' */}
+                    {/* Accept Button: primary white background, black text, 52px tall */}
                     <button
                       type="button"
                       disabled={isProcessing}
                       onClick={() => handleRespond(row.assignment_id, 'accept')}
-                      className="min-h-[46px] rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-950/40 cursor-pointer"
+                      className="h-[52px] rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md"
                     >
                       {isProcessing ? (
                         <>

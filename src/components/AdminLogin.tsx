@@ -81,23 +81,23 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
       </button>
 
       {/* Login Card */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-6 sm:p-7 shadow-xl space-y-6">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-6 sm:p-7 shadow-xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center mx-auto text-emerald-400">
+          <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-white">
             <Shield className="w-6 h-6 stroke-[2.2]" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-white">
+          <h1 className="text-[28px] font-bold tracking-tight text-white leading-tight">
             Admin Portal Login
           </h1>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-[#A3A3A3]">
             Sign in to manage outstation bookings and vehicle dispatch.
           </p>
         </div>
 
         {/* Error message */}
         {errorMessage && (
-          <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-sm flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-sm flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
             <p className="text-xs leading-relaxed">{errorMessage}</p>
           </div>
         )}
@@ -105,7 +105,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
           <div>
-            <label htmlFor={emailId} className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label htmlFor={emailId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
               Admin Email
             </label>
             <div className="relative">
@@ -117,9 +117,9 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@chalo.com"
-                className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+                className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
               />
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                 <Mail className="w-4 h-4" />
               </div>
             </div>
@@ -127,7 +127,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
 
           {/* Password */}
           <div>
-            <label htmlFor={passwordId} className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label htmlFor={passwordId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
               Password
             </label>
             <div className="relative">
@@ -139,9 +139,9 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+                className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
               />
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                 <Lock className="w-4 h-4" />
               </div>
             </div>
@@ -151,10 +151,10 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
           <button
             type="submit"
             disabled={isLoading || !email.trim() || !password.trim()}
-            className={`w-full min-h-[50px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
+            className={`w-full h-[52px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
               !isLoading && email.trim() && password.trim()
-                ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer'
-                : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
+                ? 'bg-white hover:bg-neutral-200 text-black cursor-pointer'
+                : 'bg-[#262626] text-[#A3A3A3] cursor-not-allowed'
             }`}
           >
             {isLoading ? (

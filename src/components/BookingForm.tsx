@@ -291,34 +291,34 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto space-y-5 pb-8">
+    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto space-y-4 pb-8">
       {/* Check my booking banner link */}
       {onOpenCheckBooking && (
-        <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#121820] border border-white/10 text-xs shadow-md">
-          <div className="flex items-center gap-2 text-zinc-300 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Already have a booking?</span>
+        <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#141414] border border-[#262626] text-xs shadow-md">
+          <div className="flex items-center gap-2 text-[#A3A3A3] font-medium">
+            <span className="w-2 h-2 rounded-full bg-[#F59E0B] animate-pulse" />
+            <span className="text-white">Already have a booking?</span>
           </div>
           <button
             type="button"
             onClick={onOpenCheckBooking}
-            className="text-emerald-400 hover:text-emerald-300 font-bold underline underline-offset-4 cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] px-2 py-1 transition-colors"
+            className="text-white hover:text-neutral-300 font-bold underline underline-offset-4 cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] px-2 py-1 transition-colors"
           >
             <span>Check my booking</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#F59E0B]" />
           </button>
         </div>
       )}
 
       {/* Route & Trip Type Section */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-4">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 space-y-4">
         {/* Origin & Destination */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+            <h2 className="text-[20px] font-bold tracking-tight text-white">
               Trip Route
             </h2>
-            <span className="text-xs text-zinc-400">
+            <span className="text-xs text-[#A3A3A3]">
               {activeRoute.distanceKm} km · approx {activeRoute.approxTime}
             </span>
           </div>
@@ -326,18 +326,18 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Origin (Always Rewa) */}
             <div>
-              <label htmlFor={fromCityId} className="block text-xs font-medium text-zinc-400 mb-1.5">
+              <label htmlFor={fromCityId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
                 From City
               </label>
-              <div className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-white/5 border border-white/10 text-white min-h-[48px]">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0" />
+              <div className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white min-h-[48px]">
+                <div className="w-2.5 h-2.5 rounded-full bg-white shrink-0" />
                 <span id={fromCityId} className="text-sm font-semibold">Rewa, Madhya Pradesh</span>
               </div>
             </div>
 
             {/* Destination Dropdown */}
             <div>
-              <label htmlFor={toCityId} className="block text-xs font-medium text-zinc-400 mb-1.5">
+              <label htmlFor={toCityId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
                 Destination (To City)
               </label>
               <div className="relative">
@@ -348,15 +348,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
                     setToCity(e.target.value);
                     setDropAddress(''); // reset drop address for new city
                   }}
-                  className="w-full px-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white font-medium text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px] appearance-none cursor-pointer pr-10"
+                  className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white font-medium text-sm focus:outline-none focus:ring-1 focus:ring-white min-h-[48px] appearance-none cursor-pointer pr-10"
                 >
                   {DESTINATIONS.map((dest) => (
-                    <option key={dest.id} value={dest.id} className="bg-[#121820] text-white">
+                    <option key={dest.id} value={dest.id} className="bg-[#141414] text-white">
                       {dest.name} ({dest.distanceKm} km)
                     </option>
                   ))}
                 </select>
-                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#A3A3A3]">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -366,17 +366,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
 
         {/* Trip Type Toggle (One Way vs Round Trip) */}
         <div>
-          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+          <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
             Trip Type
           </label>
-          <div className="grid grid-cols-2 gap-2 p-1 bg-[#0b0f14] rounded-xl border border-white/10">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-[#0A0A0A] rounded-xl border border-[#262626]">
             <button
               type="button"
               onClick={() => setTripType('one_way')}
-              className={`min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                 tripType === 'one_way'
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'text-zinc-300 hover:text-white'
+                  ? 'bg-white text-black font-bold shadow-sm'
+                  : 'text-[#A3A3A3] hover:text-white'
               }`}
             >
               <span>One Way Drop</span>
@@ -384,10 +384,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
             <button
               type="button"
               onClick={() => setTripType('round_trip')}
-              className={`min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
                 tripType === 'round_trip'
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'text-zinc-300 hover:text-white'
+                  ? 'bg-white text-black font-bold shadow-sm'
+                  : 'text-[#A3A3A3] hover:text-white'
               }`}
             >
               <span>Round Trip (Return)</span>
@@ -397,7 +397,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
 
         {/* Vehicle Selection Toggle */}
         <div>
-          <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+          <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
             Vehicle Class
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -405,24 +405,24 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
             <button
               type="button"
               onClick={() => setVehicleType('sedan')}
-              className={`p-3.5 rounded-xl border text-left transition-all min-h-[76px] flex flex-col justify-between ${
+              className={`p-3.5 rounded-xl border text-left transition-all min-h-[76px] flex flex-col justify-between cursor-pointer ${
                 vehicleType === 'sedan'
-                  ? 'bg-emerald-950/30 border-emerald-500 ring-1 ring-emerald-500 text-white'
-                  : 'bg-[#0b0f14] border-white/10 text-zinc-300 hover:border-white/20'
+                  ? 'bg-white/10 border-2 border-white text-white'
+                  : 'bg-[#0A0A0A] border-[#262626] text-[#A3A3A3] hover:border-neutral-500'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Car className={`w-4 h-4 ${vehicleType === 'sedan' ? 'text-emerald-400' : 'text-zinc-400'}`} />
-                  <span className="font-bold text-sm">Sedan</span>
+                  <Car className={`w-4 h-4 ${vehicleType === 'sedan' ? 'text-white' : 'text-[#A3A3A3]'}`} />
+                  <span className="font-bold text-sm text-white">Sedan</span>
                 </div>
                 {vehicleType === 'sedan' && (
-                  <span className="w-5 h-5 rounded-full bg-emerald-500 text-black flex items-center justify-center text-xs">
+                  <span className="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-xs">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </span>
                 )}
               </div>
-              <div className="text-[11px] text-zinc-400 mt-1 flex items-center gap-3">
+              <div className="text-[11px] text-[#A3A3A3] mt-1 flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <Users className="w-3 h-3" /> 4 Seats
                 </span>
@@ -431,31 +431,31 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
                 </span>
                 <span>AC</span>
               </div>
-              <p className="text-[10px] text-zinc-400 mt-1 truncate">Dzire, Etios or equivalent</p>
+              <p className="text-[10px] text-[#A3A3A3] mt-1 truncate">Dzire, Etios or equivalent</p>
             </button>
 
             {/* SUV */}
             <button
               type="button"
               onClick={() => setVehicleType('suv')}
-              className={`p-3.5 rounded-xl border text-left transition-all min-h-[76px] flex flex-col justify-between ${
+              className={`p-3.5 rounded-xl border text-left transition-all min-h-[76px] flex flex-col justify-between cursor-pointer ${
                 vehicleType === 'suv'
-                  ? 'bg-emerald-950/30 border-emerald-500 ring-1 ring-emerald-500 text-white'
-                  : 'bg-[#0b0f14] border-white/10 text-zinc-300 hover:border-white/20'
+                  ? 'bg-white/10 border-2 border-white text-white'
+                  : 'bg-[#0A0A0A] border-[#262626] text-[#A3A3A3] hover:border-neutral-500'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Car className={`w-4 h-4 ${vehicleType === 'suv' ? 'text-emerald-400' : 'text-zinc-400'}`} />
-                  <span className="font-bold text-sm">SUV</span>
+                  <Car className={`w-4 h-4 ${vehicleType === 'suv' ? 'text-white' : 'text-[#A3A3A3]'}`} />
+                  <span className="font-bold text-sm text-white">SUV</span>
                 </div>
                 {vehicleType === 'suv' && (
-                  <span className="w-5 h-5 rounded-full bg-emerald-500 text-black flex items-center justify-center text-xs">
+                  <span className="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center text-xs">
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </span>
                 )}
               </div>
-              <div className="text-[11px] text-zinc-400 mt-1 flex items-center gap-3">
+              <div className="text-[11px] text-[#A3A3A3] mt-1 flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <Users className="w-3 h-3" /> 6-7 Seats
                 </span>
@@ -464,22 +464,22 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
                 </span>
                 <span>AC</span>
               </div>
-              <p className="text-[10px] text-zinc-400 mt-1 truncate">Ertiga, Innova or equivalent</p>
+              <p className="text-[10px] text-[#A3A3A3] mt-1 truncate">Ertiga, Innova or equivalent</p>
             </button>
           </div>
         </div>
       </div>
 
       {/* Addresses & Pickup Schedule Section */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-4">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 space-y-4">
+        <h2 className="text-[20px] font-bold tracking-tight text-white">
           Pickup & Drop Details
         </h2>
 
         {/* Pickup Address */}
         <div>
-          <label htmlFor={pickupAddressId} className="block text-xs font-medium text-zinc-400 mb-1.5">
-            Pickup Address <span className="text-emerald-400">*</span>
+          <label htmlFor={pickupAddressId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+            Pickup Address <span className="text-[#F59E0B]">*</span>
           </label>
           <div className="relative">
             <input
@@ -488,8 +488,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
               required
               value={pickupAddress}
               onChange={(e) => setPickupAddress(e.target.value)}
-              placeholder="Area, landmark or street"
-              className="w-full px-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-400 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+              placeholder="Area, landmark or street in Rewa"
+              className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-[#737373] text-sm focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
             />
           </div>
 
@@ -497,14 +497,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
           <div className="mt-2 flex flex-col gap-1.5">
             {pickupCoords ? (
               <div className="flex items-center justify-between px-1 py-0.5">
-                <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+                <span className="text-xs font-semibold text-[#22c55e] flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
                   <span>Location captured</span>
                 </span>
                 <button
                   type="button"
                   onClick={handleClearLocation}
-                  className="text-xs text-zinc-400 hover:text-white underline underline-offset-2 cursor-pointer transition-colors"
+                  className="text-xs text-[#A3A3A3] hover:text-white underline underline-offset-2 cursor-pointer transition-colors"
                 >
                   Clear
                 </button>
@@ -515,16 +515,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
                   type="button"
                   onClick={handleGetCurrentLocation}
                   disabled={isLocating}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 text-emerald-400 border border-white/10 text-xs font-semibold transition-colors cursor-pointer min-h-[36px]"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-transparent hover:bg-white/5 active:bg-white/10 text-white border border-white/20 text-xs font-medium transition-colors cursor-pointer min-h-[36px]"
                 >
                   {isLocating ? (
                     <>
-                      <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-[#F59E0B]" />
                       <span>Getting your location...</span>
                     </>
                   ) : (
                     <>
-                      <Crosshair className="w-3.5 h-3.5 text-emerald-400" />
+                      <Crosshair className="w-3.5 h-3.5 text-[#F59E0B]" />
                       <span>Use my current location</span>
                     </>
                   )}
@@ -533,8 +533,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
             )}
 
             {locationError && (
-              <p className="text-xs text-amber-300 flex items-center gap-1.5 px-1 animate-in fade-in">
-                <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <p className="text-xs text-[#EF4444] flex items-center gap-1.5 px-1 animate-in fade-in">
+                <AlertCircle className="w-3.5 h-3.5 text-[#EF4444] shrink-0" />
                 <span>{locationError}</span>
               </p>
             )}
@@ -543,8 +543,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
 
         {/* Drop Address */}
         <div>
-          <label htmlFor={dropAddressId} className="block text-xs font-medium text-zinc-400 mb-1.5">
-            Drop Address in {toCity} <span className="text-emerald-400">*</span>
+          <label htmlFor={dropAddressId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+            Drop Address in {toCity} <span className="text-[#F59E0B]">*</span>
           </label>
           <div className="relative">
             <input
@@ -554,20 +554,20 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
               value={dropAddress}
               onChange={(e) => setDropAddress(e.target.value)}
               placeholder={`e.g. Railway Station / Airport / Hotel in ${toCity}`}
-              className="w-full px-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-400 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+              className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-[#737373] text-sm focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
             />
           </div>
 
           {/* Quick Drop Suggestions for selected city */}
           {activeRoute.popularDrop.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5 items-center">
-              <span className="text-[11px] text-zinc-400 mr-1">Popular in {toCity}:</span>
+              <span className="text-[11px] text-[#A3A3A3] mr-1">Popular in {toCity}:</span>
               {activeRoute.popularDrop.map((spot) => (
                 <button
                   key={spot}
                   type="button"
                   onClick={() => setDropAddress(spot)}
-                  className="text-[11px] px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 transition-colors"
+                  className="text-[11px] px-2.5 py-1 rounded-md bg-transparent hover:bg-white/5 text-white border border-white/20 transition-colors cursor-pointer"
                 >
                   {spot}
                 </button>
@@ -579,11 +579,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
         {/* Pickup Date & Time */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label htmlFor={pickupTimeId} className="block text-xs font-medium text-zinc-400">
-              Pickup Date & Time <span className="text-emerald-400">*</span>
+            <label htmlFor={pickupTimeId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
+              Pickup Date & Time <span className="text-[#F59E0B]">*</span>
             </label>
             {pickupWhen && (
-              <span className="text-xs text-emerald-400 font-medium">
+              <span className="text-xs text-[#F59E0B] font-medium">
                 {formatFriendlyDate(pickupWhen)}
               </span>
             )}
@@ -596,7 +596,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
             min={getMinPickupTime()}
             value={pickupWhen}
             onChange={(e) => setPickupWhen(e.target.value)}
-            className="w-full px-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+            className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white text-sm focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
           />
 
           {/* Quick Schedule Buttons */}
@@ -604,17 +604,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
             <button
               type="button"
               onClick={() => setQuickTime(2)}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 transition-colors flex items-center gap-1.5"
+              className="text-xs px-2.5 py-1.5 rounded-lg bg-transparent hover:bg-white/5 text-white border border-white/20 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <Clock className="w-3 h-3 text-emerald-400" />
+              <Clock className="w-3.5 h-3.5 text-[#F59E0B]" />
               <span>Today (+2 hrs)</span>
             </button>
             <button
               type="button"
               onClick={setTomorrowMorning}
-              className="text-xs px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 transition-colors flex items-center gap-1.5"
+              className="text-xs px-2.5 py-1.5 rounded-lg bg-transparent hover:bg-white/5 text-white border border-white/20 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <Calendar className="w-3 h-3 text-emerald-400" />
+              <Calendar className="w-3.5 h-3.5 text-[#F59E0B]" />
               <span>Tomorrow 08:00 AM</span>
             </button>
           </div>
@@ -622,16 +622,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
       </div>
 
       {/* Rider Information Section */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5 space-y-4">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 space-y-4">
+        <h2 className="text-[20px] font-bold tracking-tight text-white">
           Rider Contact Information
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Rider Name */}
           <div>
-            <label htmlFor={riderNameId} className="block text-xs font-medium text-zinc-400 mb-1.5">
-              Full Name <span className="text-emerald-400">*</span>
+            <label htmlFor={riderNameId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+              Full Name <span className="text-[#F59E0B]">*</span>
             </label>
             <div className="relative">
               <input
@@ -641,7 +641,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
                 value={riderName}
                 onChange={(e) => setRiderName(e.target.value)}
                 placeholder="Enter full name"
-                className="w-full px-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-400 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+                className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-[#737373] text-sm focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
               />
             </div>
           </div>
@@ -649,17 +649,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
           {/* Indian Phone Number */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label htmlFor={riderPhoneId} className="block text-xs font-medium text-zinc-400">
-                10-Digit Mobile Number <span className="text-emerald-400">*</span>
+              <label htmlFor={riderPhoneId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3]">
+                10-Digit Mobile Number <span className="text-[#F59E0B]">*</span>
               </label>
               {isPhoneValid && (
-                <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5" /> Valid
+                <span className="text-[11px] text-[#22c55e] font-semibold flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5 stroke-[2.5]" /> Valid
                 </span>
               )}
             </div>
             <div className="relative flex">
-              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-white/15 bg-white/5 text-zinc-400 text-sm font-semibold select-none">
+              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-[#262626] bg-[#0A0A0A] text-[#A3A3A3] text-sm font-semibold select-none">
                 +91
               </span>
               <input
@@ -670,47 +670,78 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
                 value={riderPhone}
                 onChange={(e) => setRiderPhone(e.target.value)}
                 placeholder="98765 43210"
-                className={`w-full px-3.5 py-3 rounded-r-xl bg-[#0b0f14] border text-white placeholder-zinc-400 text-sm font-mono focus:outline-none focus:ring-2 min-h-[48px] ${
+                className={`w-full px-3.5 py-3 rounded-r-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-[#737373] text-sm font-mono focus:outline-none focus:ring-1 focus:ring-white min-h-[48px] ${
                   isPhoneValid
-                    ? 'border-emerald-500/50 focus:ring-emerald-500'
-                    : riderPhone.length > 0
-                    ? 'border-white/15 focus:ring-emerald-500'
-                    : 'border-white/15 focus:ring-emerald-500'
+                    ? 'border-[#22c55e]/50'
+                    : ''
                 }`}
               />
             </div>
-            <p className="text-[11px] text-zinc-400 mt-1">
+            <p className="text-[11px] text-[#A3A3A3] mt-1">
               WhatsApp driver confirmation will be sent to this number.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Live Fare Display Card */}
-      <div className={`bg-[#121820] border ${fareError ? 'border-red-500/40' : 'border-emerald-500/30'} rounded-2xl p-5 shadow-lg relative overflow-hidden`}>
+      {/* Booking Card: Route line, vehicle pill, large saffron fare & "Guaranteed fare" */}
+      <div className={`bg-[#141414] border ${fareError ? 'border-[#EF4444]/40' : 'border-[#262626]'} rounded-2xl p-4 sm:p-5 shadow-lg relative overflow-hidden`}>
         <div className="flex items-center justify-between gap-4">
-          <div>
-            <span className={`text-xs uppercase font-bold tracking-wider ${fareError ? 'text-red-400' : 'text-emerald-400'} block mb-0.5`}>
-              Guaranteed Upfront Fare
-            </span>
-            <p className="text-xs text-zinc-400">
-              Rewa ➔ {toCity} ({tripType === 'round_trip' ? 'Round Trip' : 'One Way'} · {vehicleType.toUpperCase()})
-            </p>
+          {/* Left: Route line with filled dot for pickup, vertical line, hollow dot for drop */}
+          <div className="flex items-start gap-3">
+            <div className="flex flex-col items-center pt-1 shrink-0">
+              {/* Pickup filled dot */}
+              <div className="w-2.5 h-2.5 rounded-full bg-white shadow-sm" />
+              {/* Vertical route line */}
+              <div className="w-0.5 h-6 bg-[#262626] my-0.5" />
+              {/* Drop hollow dot */}
+              <div className="w-2.5 h-2.5 rounded-full border-2 border-[#F59E0B] bg-[#141414]" />
+            </div>
+
+            <div className="space-y-1.5">
+              <div>
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-[#A3A3A3] block leading-none">
+                  Pickup
+                </span>
+                <span className="text-sm font-bold text-white leading-tight">
+                  Rewa
+                </span>
+              </div>
+              <div>
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-[#A3A3A3] block leading-none">
+                  Drop
+                </span>
+                <span className="text-sm font-bold text-white leading-tight">
+                  {toCity}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 pt-0.5">
+                {/* Vehicle type as a small pill (SEDAN, SUV) with a simple outline icon */}
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-bold text-white uppercase tracking-wider">
+                  <Car className="w-3 h-3 text-[#A3A3A3]" />
+                  <span>{vehicleType}</span>
+                </span>
+                <span className="text-[10px] font-semibold text-[#A3A3A3] uppercase tracking-wider">
+                  {tripType === 'round_trip' ? 'Round Trip' : 'One Way'}
+                </span>
+              </div>
+            </div>
           </div>
 
+          {/* Right: Fare in 32px bold saffron with "Guaranteed fare" beneath it */}
           <div className="text-right shrink-0">
             {fareLoading ? (
-              <div className="flex items-center gap-2 text-zinc-400 py-1">
-                <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
-                <span className="text-sm font-medium">Calculating...</span>
+              <div className="flex items-center gap-2 text-[#A3A3A3] py-2">
+                <Loader2 className="w-5 h-5 animate-spin text-[#F59E0B]" />
+                <span className="text-xs font-semibold">Calculating...</span>
               </div>
             ) : fareError ? (
               <div className="text-right">
-                <span className="text-sm font-semibold text-red-400 block">Unavailable</span>
+                <span className="text-sm font-semibold text-[#EF4444] block">Unavailable</span>
                 <button
                   type="button"
                   onClick={() => fetchFare(toCity, vehicleType, tripType)}
-                  className="text-xs text-emerald-400 hover:text-emerald-300 font-medium inline-flex items-center gap-1.5 mt-1 cursor-pointer"
+                  className="text-xs text-[#F59E0B] hover:text-white font-medium inline-flex items-center gap-1.5 mt-1 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Retry</span>
@@ -718,10 +749,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
               </div>
             ) : fare !== null ? (
               <div>
-                <span className="text-3xl font-extrabold text-white tabular-nums tracking-tight">
+                <span className="text-[32px] font-bold text-[#F59E0B] leading-none tabular-nums block">
                   {formatRupees(fare)}
                 </span>
-                <span className="block text-[10px] text-zinc-400 font-medium">All Inclusive</span>
+                <span className="block text-[11px] text-[#A3A3A3] font-medium mt-1">Guaranteed fare</span>
               </div>
             ) : null}
           </div>
@@ -729,15 +760,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
 
         {/* Fare Unavailable Error Message */}
         {fareError && (
-          <div className="mt-3.5 p-3 rounded-xl bg-red-950/40 border border-red-500/30 text-red-200 text-xs flex items-center justify-between gap-2">
+          <div className="mt-3.5 p-3 rounded-xl bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] text-xs flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0" />
               <span>Fare unavailable. Please check your connection and try again.</span>
             </div>
             <button
               type="button"
               onClick={() => fetchFare(toCity, vehicleType, tripType)}
-              className="text-xs text-red-300 hover:text-white font-semibold underline underline-offset-2 shrink-0 cursor-pointer"
+              className="text-xs text-[#EF4444] hover:text-white font-semibold underline underline-offset-2 shrink-0 cursor-pointer"
             >
               Retry
             </button>
@@ -745,21 +776,21 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
         )}
 
         {/* Fare Inclusions */}
-        <div className="mt-3.5 pt-3.5 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-zinc-300">
+        <div className="mt-3.5 pt-3.5 border-t border-[#262626] grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-[#A3A3A3]">
           <div className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <Check className="w-3.5 h-3.5 text-[#22c55e] shrink-0" />
             <span>Toll Taxes & Permits</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <Check className="w-3.5 h-3.5 text-[#22c55e] shrink-0" />
             <span>Driver Allowance</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <Check className="w-3.5 h-3.5 text-[#22c55e] shrink-0" />
             <span>AC Vehicle Guarantee</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <Check className="w-3.5 h-3.5 text-[#22c55e] shrink-0" />
             <span>No Hidden Surges</span>
           </div>
         </div>
@@ -767,24 +798,24 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
 
       {/* Error Banner if submit failed */}
       {submitError && (
-        <div className="p-4 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-sm flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-[#EF4444]/10 border border-[#EF4444]/40 text-[#EF4444] text-sm flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-[#EF4444] shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="font-semibold">Booking Request Failed</p>
-            <p className="text-xs text-red-300 mt-0.5">{submitError}</p>
+            <p className="font-semibold text-white">Booking Request Failed</p>
+            <p className="text-xs text-[#EF4444] mt-0.5">{submitError}</p>
           </div>
         </div>
       )}
 
-      {/* Submit Button */}
+      {/* Submit Button: Primary 52px tall, white background, black text, rounded-xl */}
       <div className="space-y-2 pt-1">
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting || fare === null || Boolean(fareError)}
-          className={`w-full min-h-[52px] rounded-xl font-bold text-base flex items-center justify-center gap-2.5 transition-all shadow-lg min-w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
+          className={`w-full h-[52px] rounded-xl font-bold text-base flex items-center justify-center gap-2.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
             isFormValid && !isSubmitting && fare !== null && !fareError
-              ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer active:scale-[0.99]'
-              : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
+              ? 'bg-white hover:bg-neutral-200 active:bg-neutral-300 text-black cursor-pointer'
+              : 'bg-neutral-800 text-neutral-500 border border-[#262626] cursor-not-allowed'
           }`}
         >
           {isSubmitting ? (
@@ -804,25 +835,25 @@ export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onOpenCheck
 
         {/* Validation hint if disabled */}
         {!isFormValid && !isSubmitting && (
-          <p className="text-center text-xs text-zinc-400 flex items-center justify-center gap-1.5">
-            <Info className="w-3.5 h-3.5" />
+          <p className="text-center text-xs text-[#A3A3A3] flex items-center justify-center gap-1.5">
+            <Info className="w-3.5 h-3.5 text-[#F59E0B]" />
             <span>{getValidationHint()}</span>
           </p>
         )}
 
-        <p className="text-center text-[11px] text-zinc-400">
+        <p className="text-center text-[11px] text-[#A3A3A3]">
           Book as guest without login. No upfront payment required.
         </p>
 
         {onOpenCheckBooking && (
-          <div className="text-center pt-2 border-t border-white/5">
+          <div className="text-center pt-2 border-t border-[#262626]">
             <button
               type="button"
               onClick={onOpenCheckBooking}
-              className="text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] px-3 py-1"
+              className="text-xs text-[#A3A3A3] hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5 min-h-[44px] px-3 py-1"
             >
               <span>Need to look up an existing trip?</span>
-              <span className="text-emerald-400 font-bold underline underline-offset-4">Check my booking</span>
+              <span className="text-white font-bold underline underline-offset-4">Check my booking</span>
             </button>
           </div>
         )}

@@ -132,7 +132,7 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
         <button
           type="button"
           onClick={onNavigateHome}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-white transition-colors min-h-[44px] py-1 px-2 rounded-lg"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A3A3A3] hover:text-white transition-colors min-h-[44px] py-1 px-2 rounded-lg"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Booking</span>
@@ -141,7 +141,7 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
         <button
           type="button"
           onClick={onSignOut}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-300 hover:text-red-200 bg-red-950/40 hover:bg-red-900/50 border border-red-500/30 rounded-lg min-h-[44px] transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#EF4444] hover:bg-[#EF4444]/10 border border-[#EF4444] rounded-xl min-h-[44px] transition-colors cursor-pointer"
         >
           <LogOut className="w-3.5 h-3.5" />
           <span>Sign Out</span>
@@ -149,24 +149,24 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
       </div>
 
       {/* Main Profile Form Card */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
         {/* Header */}
         <div className="text-center space-y-1.5">
-          <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center mx-auto text-emerald-400 mb-2">
+          <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-white mb-2">
             <Car className="w-6 h-6 stroke-[2.2]" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-white">
+          <h1 className="text-[28px] font-bold tracking-tight text-white leading-tight">
             Complete your driver profile
           </h1>
-          <p className="text-xs text-zinc-400 max-w-sm mx-auto">
-            Signed in as <span className="text-zinc-200 font-mono font-semibold">{currentUser.email || 'authenticated user'}</span>. Enter your details to attach your vehicle and start receiving trip offers.
+          <p className="text-xs text-[#A3A3A3] max-w-sm mx-auto">
+            Signed in as <span className="text-white font-mono font-semibold">{currentUser.email || 'authenticated user'}</span>. Enter your details to attach your vehicle and start receiving trip offers.
           </p>
         </div>
 
         {/* Error notification from register_driver RPC */}
         {errorMessage && (
-          <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
-            <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-xs flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
             <p className="leading-relaxed font-medium">{errorMessage}</p>
           </div>
         )}
@@ -174,8 +174,8 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <div>
-            <label htmlFor={nameId} className="block text-xs font-medium text-zinc-300 mb-1">
-              Full Name <span className="text-emerald-400">*</span>
+            <label htmlFor={nameId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+              Full Name <span className="text-[#F59E0B]">*</span>
             </label>
             <div className="relative">
               <input
@@ -185,9 +185,9 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Ramesh Patel"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
               />
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                 <UserIcon className="w-4 h-4" />
               </div>
             </div>
@@ -195,11 +195,11 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
 
           {/* 10-Digit Mobile Number */}
           <div>
-            <label htmlFor={phoneId} className="block text-xs font-medium text-zinc-300 mb-1">
-              10-Digit Mobile Number <span className="text-emerald-400">*</span>
+            <label htmlFor={phoneId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+              10-Digit Mobile Number <span className="text-[#F59E0B]">*</span>
             </label>
             <div className="relative flex">
-              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-white/15 bg-white/5 text-zinc-400 text-xs font-semibold select-none min-h-[44px]">
+              <span className="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-[#262626] bg-[#0A0A0A] text-[#A3A3A3] text-xs font-semibold select-none min-h-[48px]">
                 +91
               </span>
               <input
@@ -210,11 +210,11 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="98765 43210"
-                className="w-full px-3.5 py-2.5 rounded-r-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                className="w-full px-3.5 py-3 rounded-r-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm font-mono focus:outline-none focus:border-white min-h-[48px]"
               />
             </div>
             {phone && !isPhoneValid && (
-              <p className="text-[11px] text-amber-300 mt-1">
+              <p className="text-[11px] text-[#F59E0B] mt-1">
                 Enter a valid 10-digit mobile number
               </p>
             )}
@@ -223,17 +223,17 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
           {/* Vehicle Type & Registration Number */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             <div>
-              <label htmlFor={vehicleTypeId} className="block text-xs font-medium text-zinc-300 mb-1">
-                Vehicle Type <span className="text-emerald-400">*</span>
+              <label htmlFor={vehicleTypeId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                Vehicle Type <span className="text-[#F59E0B]">*</span>
               </label>
               <select
                 id={vehicleTypeId}
                 value={vehicleType}
                 onChange={(e) => setVehicleType(e.target.value as DriverVehicleType)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px] cursor-pointer"
+                className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white text-sm focus:outline-none focus:border-white min-h-[48px] cursor-pointer"
               >
                 {VEHICLE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#121820] text-white">
+                  <option key={opt.value} value={opt.value} className="bg-[#141414] text-white">
                     {opt.label}
                   </option>
                 ))}
@@ -241,8 +241,8 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
             </div>
 
             <div>
-              <label htmlFor={regNoId} className="block text-xs font-medium text-zinc-300 mb-1">
-                Registration No. <span className="text-emerald-400">*</span>
+              <label htmlFor={regNoId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                Registration No. <span className="text-[#F59E0B]">*</span>
               </label>
               <input
                 id={regNoId}
@@ -251,25 +251,25 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
                 value={regNo}
                 onChange={(e) => setRegNo(e.target.value)}
                 placeholder="MP17 AB 1234"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm font-mono uppercase focus:outline-none focus:border-white min-h-[48px]"
               />
             </div>
           </div>
 
           {/* Registration Notice */}
-          <div className="p-3 bg-[#0b0f14] border border-white/5 rounded-xl text-xs text-zinc-400 space-y-1">
-            <p className="font-semibold text-zinc-300">Next Step: Document Verification</p>
+          <div className="p-3.5 bg-[#0A0A0A] border border-[#262626] rounded-xl text-xs text-[#A3A3A3] space-y-1">
+            <p className="font-semibold text-white">Next Step: Document Verification</p>
             <p>After registering your vehicle, you will upload RC, Permit, Insurance, and Driving Licence for fleet verification.</p>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button: Primary 52px white button */}
           <button
             type="submit"
             disabled={isLoading || !name.trim() || !isPhoneValid || !regNo.trim()}
-            className={`w-full min-h-[48px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
+            className={`w-full h-[52px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
               !isLoading && name.trim() && isPhoneValid && regNo.trim()
-                ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer'
-                : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
+                ? 'bg-white hover:bg-neutral-200 text-black cursor-pointer'
+                : 'bg-[#262626] text-[#A3A3A3] cursor-not-allowed'
             }`}
           >
             {isLoading ? (
@@ -284,14 +284,14 @@ export const DriverProfileForm: React.FC<DriverProfileFormProps> = ({
         </form>
 
         {/* Quick action buttons for accessibility */}
-        <div className="pt-2 border-t border-white/5 text-center space-y-2">
-          <p className="text-[11px] text-zinc-500">
+        <div className="pt-2 border-t border-[#262626] text-center space-y-2">
+          <p className="text-[11px] text-[#A3A3A3]">
             Need to use a different account?
           </p>
           <button
             type="button"
             onClick={onSignOut}
-            className="text-xs text-zinc-400 hover:text-white underline underline-offset-4 inline-flex items-center gap-1.5 min-h-[44px] px-2 cursor-pointer"
+            className="text-xs text-[#A3A3A3] hover:text-white underline underline-offset-4 inline-flex items-center gap-1.5 min-h-[44px] px-2 cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>

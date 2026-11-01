@@ -119,25 +119,25 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
       <div className="pt-2 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-white">
-            <FileText className="w-4 h-4 text-emerald-400" />
+            <FileText className="w-4 h-4 text-[#F59E0B]" />
             <span>Driver Documents</span>
           </div>
-          <span className="text-[11px] font-mono font-bold text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+          <span className="text-[11px] font-mono font-bold text-[#F59E0B] bg-[#F59E0B]/10 border border-[#F59E0B]/30 px-2.5 py-0.5 rounded-full">
             {uploadedCount} of 4 uploaded
           </span>
         </div>
 
-        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5">
+        <div className="p-3.5 rounded-xl bg-[#0A0A0A] border border-[#F59E0B]/30 space-y-2">
           <p className="text-xs text-amber-200 font-medium leading-relaxed">
             Upload all four documents. We review them before activating your account.
           </p>
-          <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+          <div className="w-full bg-[#262626] h-1.5 rounded-full overflow-hidden">
             <div 
-              className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+              className="bg-[#F59E0B] h-full rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-[10px] text-zinc-400">PDF, JPG, PNG up to 5 MB</p>
+          <p className="text-[11px] text-[#A3A3A3]">PDF, JPG, PNG up to 5 MB</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -149,10 +149,10 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             return (
               <div 
                 key={config.type} 
-                className={`p-3 rounded-xl border text-xs transition-all ${
+                className={`p-3.5 rounded-xl border text-xs transition-all ${
                   isSelected 
-                    ? 'bg-emerald-950/20 border-emerald-500/30' 
-                    : 'bg-[#0b0f14] border-white/10'
+                    ? 'bg-[#0A0A0A] border-emerald-500/40' 
+                    : 'bg-[#0A0A0A] border-[#262626]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-1.5">
@@ -409,7 +409,7 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
     <div className="w-full max-w-md mx-auto space-y-4 animate-in fade-in duration-200">
       {/* Mode Switcher Tabs */}
       {mode !== 'step2' && (
-        <div className="grid grid-cols-2 p-1 bg-[#121820] border border-white/10 rounded-xl">
+        <div className="grid grid-cols-2 p-1 bg-[#141414] border border-[#262626] rounded-xl">
           <button
             type="button"
             onClick={() => {
@@ -419,8 +419,8 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             }}
             className={`min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all ${
               mode === 'signin'
-                ? 'bg-emerald-500 text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-[#A3A3A3] hover:text-white'
             }`}
           >
             Driver Sign In
@@ -434,8 +434,8 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             }}
             className={`min-h-[44px] py-2 rounded-lg text-xs font-bold transition-all ${
               mode === 'signup'
-                ? 'bg-emerald-500 text-black shadow-md'
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-[#A3A3A3] hover:text-white'
             }`}
           >
             New Driver Sign Up
@@ -444,13 +444,13 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
       )}
 
       {/* Main Form Container */}
-      <div className="bg-[#121820] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+      <div className="bg-[#141414] border border-[#262626] rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
         {/* Header */}
         <div className="text-center space-y-1">
-          <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center mx-auto text-emerald-400 mb-2">
+          <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto text-white mb-2">
             <Car className="w-6 h-6 stroke-[2.2]" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-white">
+          <h1 className="text-[28px] font-bold tracking-tight text-white leading-tight">
             {mode === 'signin'
               ? 'Driver Sign In'
               : mode === 'signup'
@@ -486,7 +486,7 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
         {mode === 'signin' && (
           <form onSubmit={handleSignIn} className="space-y-4">
             <div>
-              <label htmlFor={signInEmailId} className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label htmlFor={signInEmailId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
                 Email Address
               </label>
               <div className="relative">
@@ -498,16 +498,16 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={signInEmail}
                   onChange={(e) => setSignInEmail(e.target.value)}
                   placeholder="driver@example.com"
-                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
                 />
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                   <Mail className="w-4 h-4" />
                 </div>
               </div>
             </div>
 
             <div>
-              <label htmlFor={signInPasswordId} className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label htmlFor={signInPasswordId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
                 Password
               </label>
               <div className="relative">
@@ -519,9 +519,9 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={signInPassword}
                   onChange={(e) => setSignInPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[48px]"
+                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
                 />
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                   <Lock className="w-4 h-4" />
                 </div>
               </div>
@@ -530,10 +530,10 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             <button
               type="submit"
               disabled={isLoading || !signInEmail.trim() || !signInPassword.trim()}
-              className={`w-full min-h-[50px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
+              className={`w-full h-[52px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg ${
                 !isLoading && signInEmail.trim() && signInPassword.trim()
-                  ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer'
-                  : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
+                  ? 'bg-white hover:bg-neutral-200 text-black cursor-pointer'
+                  : 'bg-[#262626] text-[#A3A3A3] cursor-not-allowed'
               }`}
             >
               {isLoading ? (
@@ -550,11 +550,11 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
 
         {/* ----------------- SCREEN 1: FULL SIGN UP FORM ----------------- */}
         {mode === 'signup' && (
-          <form onSubmit={handleSignUp} className="space-y-3.5">
+          <form onSubmit={handleSignUp} className="space-y-4">
             {/* Full Name */}
             <div>
-              <label htmlFor={nameId} className="block text-xs font-medium text-zinc-300 mb-1">
-                Full Name <span className="text-emerald-400">*</span>
+              <label htmlFor={nameId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                Full Name <span className="text-[#F59E0B]">*</span>
               </label>
               <div className="relative">
                 <input
@@ -564,9 +564,9 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter full name"
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
                 />
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                   <User className="w-4 h-4" />
                 </div>
               </div>
@@ -574,11 +574,11 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
 
             {/* 10-Digit Mobile */}
             <div>
-              <label htmlFor={phoneId} className="block text-xs font-medium text-zinc-300 mb-1">
-                10-Digit Mobile Number <span className="text-emerald-400">*</span>
+              <label htmlFor={phoneId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                10-Digit Mobile Number <span className="text-[#F59E0B]">*</span>
               </label>
               <div className="relative flex">
-                <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-white/15 bg-white/5 text-zinc-400 text-xs font-semibold select-none min-h-[44px]">
+                <span className="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-[#262626] bg-[#0A0A0A] text-[#A3A3A3] text-xs font-semibold select-none min-h-[48px]">
                   +91
                 </span>
                 <input
@@ -589,15 +589,15 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="98765 43210"
-                  className="w-full px-3.5 py-2.5 rounded-r-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full px-3.5 py-3 rounded-r-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm font-mono focus:outline-none focus:border-white min-h-[48px]"
                 />
               </div>
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor={emailId} className="block text-xs font-medium text-zinc-300 mb-1">
-                Email Address <span className="text-emerald-400">*</span>
+              <label htmlFor={emailId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                Email Address <span className="text-[#F59E0B]">*</span>
               </label>
               <div className="relative">
                 <input
@@ -608,9 +608,9 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
                 />
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                   <Mail className="w-4 h-4" />
                 </div>
               </div>
@@ -618,8 +618,8 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
 
             {/* Password */}
             <div>
-              <label htmlFor={passwordId} className="block text-xs font-medium text-zinc-300 mb-1">
-                Password (min 8 characters) <span className="text-emerald-400">*</span>
+              <label htmlFor={passwordId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                Password (min 8 characters) <span className="text-[#F59E0B]">*</span>
               </label>
               <div className="relative">
                 <input
@@ -631,9 +631,9 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters"
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
                 />
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A3A3A3] pointer-events-none">
                   <Lock className="w-4 h-4" />
                 </div>
               </div>
@@ -642,17 +642,17 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             {/* Vehicle Type & Reg No */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label htmlFor={vehicleTypeId} className="block text-xs font-medium text-zinc-300 mb-1">
-                  Vehicle Type <span className="text-emerald-400">*</span>
+                <label htmlFor={vehicleTypeId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                  Vehicle Type <span className="text-[#F59E0B]">*</span>
                 </label>
                 <select
                   id={vehicleTypeId}
                   value={vehicleType}
                   onChange={(e) => setVehicleType(e.target.value as DriverVehicleType)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white text-sm focus:outline-none focus:border-white min-h-[48px]"
                 >
                   {VEHICLE_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value} className="bg-[#121820] text-white">
+                    <option key={opt.value} value={opt.value} className="bg-[#141414] text-white">
                       {opt.label}
                     </option>
                   ))}
@@ -660,8 +660,8 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
               </div>
 
               <div>
-                <label htmlFor={regNoId} className="block text-xs font-medium text-zinc-300 mb-1">
-                  Registration No. <span className="text-emerald-400">*</span>
+                <label htmlFor={regNoId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                  Registration No. <span className="text-[#F59E0B]">*</span>
                 </label>
                 <input
                   id={regNoId}
@@ -670,7 +670,7 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={regNo}
                   onChange={(e) => setRegNo(e.target.value)}
                   placeholder="e.g. MP17 AB 1234"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm font-mono uppercase focus:outline-none focus:border-white min-h-[48px]"
                 />
               </div>
             </div>
@@ -682,10 +682,10 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             <button
               type="submit"
               disabled={isLoading || !name.trim() || !isPhoneValid || !isPasswordValid || !regNo.trim()}
-              className={`w-full min-h-[48px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg mt-3 ${
+              className={`w-full h-[52px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg mt-3 ${
                 !isLoading && name.trim() && isPhoneValid && isPasswordValid && regNo.trim()
-                  ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer'
-                  : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
+                  ? 'bg-white hover:bg-neutral-200 text-black cursor-pointer'
+                  : 'bg-[#262626] text-[#A3A3A3] cursor-not-allowed'
               }`}
             >
               {isLoading ? (
@@ -702,14 +702,14 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
 
         {/* ----------------- STEP 2: FINISH REGISTRATION FORM ----------------- */}
         {mode === 'step2' && (
-          <form onSubmit={handleStep2Submit} className="space-y-3.5">
-            <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-300">
+          <form onSubmit={handleStep2Submit} className="space-y-4">
+            <div className="p-3.5 bg-[#0A0A0A] border border-[#F59E0B]/30 rounded-xl text-xs text-amber-200">
               Your account is signed in, but vehicle details are required to start receiving bookings.
             </div>
 
             <div>
-              <label htmlFor={nameId} className="block text-xs font-medium text-zinc-300 mb-1">
-                Full Name <span className="text-emerald-400">*</span>
+              <label htmlFor={nameId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                Full Name <span className="text-[#F59E0B]">*</span>
               </label>
               <input
                 id={nameId}
@@ -718,16 +718,16 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter full name"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-white min-h-[48px]"
               />
             </div>
 
             <div>
-              <label htmlFor={phoneId} className="block text-xs font-medium text-zinc-300 mb-1">
-                10-Digit Mobile Number <span className="text-emerald-400">*</span>
+              <label htmlFor={phoneId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                10-Digit Mobile Number <span className="text-[#F59E0B]">*</span>
               </label>
               <div className="relative flex">
-                <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-white/15 bg-white/5 text-zinc-400 text-xs font-semibold select-none min-h-[44px]">
+                <span className="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-[#262626] bg-[#0A0A0A] text-[#A3A3A3] text-xs font-semibold select-none min-h-[48px]">
                   +91
                 </span>
                 <input
@@ -738,24 +738,24 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="98765 43210"
-                  className="w-full px-3.5 py-2.5 rounded-r-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full px-3.5 py-3 rounded-r-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm font-mono focus:outline-none focus:border-white min-h-[48px]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label htmlFor={vehicleTypeId} className="block text-xs font-medium text-zinc-300 mb-1">
-                  Vehicle Type <span className="text-emerald-400">*</span>
+                <label htmlFor={vehicleTypeId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                  Vehicle Type <span className="text-[#F59E0B]">*</span>
                 </label>
                 <select
                   id={vehicleTypeId}
                   value={vehicleType}
                   onChange={(e) => setVehicleType(e.target.value as DriverVehicleType)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white text-sm focus:outline-none focus:border-white min-h-[48px]"
                 >
                   {VEHICLE_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value} className="bg-[#121820] text-white">
+                    <option key={opt.value} value={opt.value} className="bg-[#141414] text-white">
                       {opt.label}
                     </option>
                   ))}
@@ -763,8 +763,8 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
               </div>
 
               <div>
-                <label htmlFor={regNoId} className="block text-xs font-medium text-zinc-300 mb-1">
-                  Registration No. <span className="text-emerald-400">*</span>
+                <label htmlFor={regNoId} className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
+                  Registration No. <span className="text-[#F59E0B]">*</span>
                 </label>
                 <input
                   id={regNoId}
@@ -773,7 +773,7 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
                   value={regNo}
                   onChange={(e) => setRegNo(e.target.value)}
                   placeholder="e.g. MP17 AB 1234"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0b0f14] border border-white/15 text-white placeholder-zinc-500 text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]"
+                  className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white placeholder-zinc-500 text-sm font-mono uppercase focus:outline-none focus:border-white min-h-[48px]"
                 />
               </div>
             </div>
@@ -784,10 +784,10 @@ export const DriverAuth: React.FC<DriverAuthProps> = ({
             <button
               type="submit"
               disabled={isLoading || !name.trim() || !isPhoneValid || !regNo.trim()}
-              className={`w-full min-h-[48px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg mt-2 ${
+              className={`w-full h-[52px] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg mt-2 ${
                 !isLoading && name.trim() && isPhoneValid && regNo.trim()
-                  ? 'bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-emerald-950/50 cursor-pointer'
-                  : 'bg-zinc-800 text-zinc-500 border border-white/5 cursor-not-allowed'
+                  ? 'bg-white hover:bg-neutral-200 text-black cursor-pointer'
+                  : 'bg-[#262626] text-[#A3A3A3] cursor-not-allowed'
               }`}
             >
               {isLoading ? (

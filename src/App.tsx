@@ -119,7 +119,10 @@ export default function App() {
   const isCheckRoute = currentPath === '/check' || isCheckingBooking;
 
   return (
-    <div className="min-h-screen bg-[#0b0f14] text-[#f3f4f6] flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
+    <div className="min-h-screen bg-[#0A0A0A] text-white flex flex-col font-sans selection:bg-[#F59E0B]/30 selection:text-[#F59E0B]">
+      {/* 3px Brand Saffron Stripe */}
+      <div className="h-[3px] bg-[#F59E0B] w-full shrink-0" />
+
       {/* Top Bar */}
       <Navbar 
         onReset={handleBookAnother} 
@@ -128,8 +131,8 @@ export default function App() {
         isAdminLoggedIn={isAdminLoggedIn}
       />
 
-      {/* Main Container */}
-      <main className="flex-1 px-4 py-4 sm:py-7 max-w-2xl mx-auto w-full">
+      {/* Main Container: 16px page padding and 16px gap between cards */}
+      <main className="flex-1 p-4 max-w-2xl mx-auto w-full space-y-4">
         {/* ROUTE 1: /driver -> Dedicated Driver View. No admin components rendered. */}
         {isDriverRoute ? (
           <DriverApp onNavigate={navigate} />
@@ -171,38 +174,38 @@ export default function App() {
               initialPhone={prefilledLookup.phone}
             />
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Header Hero Title */}
-              <div className="space-y-2 text-center sm:text-left">
-                <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-3 py-1 rounded-full">
-                  <span>Direct Outstation Taxis</span>
+              <div className="space-y-1.5 text-center sm:text-left pt-1">
+                <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider font-semibold text-[#F59E0B] bg-[#F59E0B]/10 border border-[#F59E0B]/20 px-3 py-0.5 rounded-full">
+                  <span>Direct Outstation Cabs</span>
                   <span aria-hidden="true">·</span>
                   <span>Rewa (M.P.)</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                <h1 className="text-[28px] font-bold tracking-tight text-white leading-tight">
                   Book Outstation Cabs from Rewa
                 </h1>
-                <p className="text-sm text-zinc-400 max-w-md">
+                <p className="text-sm text-[#A3A3A3] max-w-md">
                   Guaranteed upfront pricing to Prayagraj, Varanasi, Satna, Jabalpur, Khajuraho & Bhopal. No advance payment required.
                 </p>
               </div>
 
               {/* Value Props Row */}
-              <div className="grid grid-cols-3 gap-2 py-1 text-center">
-                <div className="bg-[#121820] border border-white/5 rounded-xl p-2.5">
-                  <Shield className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-                  <p className="text-xs font-semibold text-white">Guaranteed Fare</p>
-                  <p className="text-[10px] text-zinc-400">Fixed quote before booking</p>
+              <div className="grid grid-cols-3 gap-2.5 text-center">
+                <div className="bg-[#141414] border border-[#262626] rounded-xl p-3">
+                  <Shield className="w-4 h-4 text-[#F59E0B] mx-auto mb-1.5" />
+                  <p className="text-xs font-bold text-white">Guaranteed Fare</p>
+                  <p className="text-[10px] text-[#A3A3A3] mt-0.5">Fixed quote before ride</p>
                 </div>
-                <div className="bg-[#121820] border border-white/5 rounded-xl p-2.5">
-                  <Clock className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-                  <p className="text-xs font-semibold text-white">On-Time Pickup</p>
-                  <p className="text-[10px] text-zinc-400">Doorstep pickup in Rewa</p>
+                <div className="bg-[#141414] border border-[#262626] rounded-xl p-3">
+                  <Clock className="w-4 h-4 text-[#F59E0B] mx-auto mb-1.5" />
+                  <p className="text-xs font-bold text-white">On-Time Pickup</p>
+                  <p className="text-[10px] text-[#A3A3A3] mt-0.5">Doorstep in Rewa</p>
                 </div>
-                <div className="bg-[#121820] border border-white/5 rounded-xl p-2.5">
-                  <Award className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-                  <p className="text-xs font-semibold text-white">AC Vehicles</p>
-                  <p className="text-[10px] text-zinc-400">Clean Sedans & SUVs</p>
+                <div className="bg-[#141414] border border-[#262626] rounded-xl p-3">
+                  <Award className="w-4 h-4 text-[#F59E0B] mx-auto mb-1.5" />
+                  <p className="text-xs font-bold text-white">AC Vehicles</p>
+                  <p className="text-[10px] text-[#A3A3A3] mt-0.5">Clean Sedans & SUVs</p>
                 </div>
               </div>
 
@@ -216,23 +219,23 @@ export default function App() {
               />
 
               {/* Available Routes Reference Card */}
-              <div className="bg-[#121820]/70 border border-white/10 rounded-2xl p-4 space-y-3">
+              <div className="bg-[#141414] border border-[#262626] rounded-2xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                  <h2 className="text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#F59E0B]" />
                     <span>Direct Outstation Routes From Rewa</span>
                   </h2>
-                  <span className="text-[11px] text-zinc-400">One Way & Round Trip</span>
+                  <span className="text-[11px] text-[#A3A3A3]">One Way & Round Trip</span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {DESTINATIONS.map((dest) => (
                     <div
                       key={dest.id}
-                      className="p-2.5 rounded-xl bg-[#0b0f14]/80 border border-white/5 text-left"
+                      className="p-2.5 rounded-xl bg-[#0A0A0A] border border-[#262626] text-left"
                     >
-                      <p className="text-xs font-semibold text-white">{dest.name}</p>
-                      <p className="text-[11px] text-zinc-400 mt-0.5">
+                      <p className="text-xs font-bold text-white">{dest.name}</p>
+                      <p className="text-[11px] text-[#A3A3A3] mt-0.5">
                         {dest.distanceKm} km · {dest.approxTime}
                       </p>
                     </div>
@@ -245,22 +248,22 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-white/10 py-6 pb-8 px-4 bg-[#0b0f14] text-center text-xs text-zinc-400">
+      <footer className="mt-auto border-t border-[#262626] py-6 pb-8 px-4 bg-[#0A0A0A] text-center text-xs text-[#A3A3A3]">
         <div className="max-w-2xl mx-auto space-y-2">
-          <p className="font-semibold text-zinc-400">
+          <p className="font-semibold text-white">
             Chalo Outstation Cabs · Serving Rewa, Madhya Pradesh
           </p>
-          <p className="text-[11px] text-zinc-400">
-            Proudly made in Rewa by <span className="text-[#22c55e] font-semibold">WHITE TIGER</span>
+          <p className="text-[11px] text-[#A3A3A3]">
+            Proudly made in Rewa by <span className="text-[#F59E0B] font-bold">WHITE TIGER</span>
           </p>
-          <p className="text-[11px] text-zinc-400">
+          <p className="text-[11px] text-[#A3A3A3]">
             Civil Lines, Rewa, MP 486001 · 24x7 WhatsApp Driver Coordination
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-400 pt-1">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-[#A3A3A3] pt-1">
             <button
               onClick={() => navigate('/')}
-              className={`hover:text-emerald-400 transition-colors cursor-pointer ${
-                !isDriverRoute && !isAdminRoute ? 'text-emerald-400 font-bold' : ''
+              className={`hover:text-white transition-colors cursor-pointer ${
+                !isDriverRoute && !isAdminRoute ? 'text-white font-bold underline underline-offset-4' : ''
               }`}
             >
               Rider Booking
@@ -268,8 +271,8 @@ export default function App() {
             <span>·</span>
             <button
               onClick={() => navigate('/driver')}
-              className={`hover:text-emerald-400 transition-colors cursor-pointer ${
-                isDriverRoute ? 'text-emerald-400 font-bold' : ''
+              className={`hover:text-white transition-colors cursor-pointer ${
+                isDriverRoute ? 'text-white font-bold underline underline-offset-4' : ''
               }`}
             >
               Driver Partner Portal (/driver)
@@ -277,8 +280,8 @@ export default function App() {
             <span>·</span>
             <button
               onClick={() => navigate('/admin')}
-              className={`hover:text-emerald-400 transition-colors cursor-pointer ${
-                isAdminRoute ? 'text-emerald-400 font-bold' : ''
+              className={`hover:text-white transition-colors cursor-pointer ${
+                isAdminRoute ? 'text-white font-bold underline underline-offset-4' : ''
               }`}
             >
               Admin Portal (/admin)

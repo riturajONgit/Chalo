@@ -342,7 +342,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
     const s = (status || '').toLowerCase();
     if (s === 'pending') {
       return (
-        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 flex items-center gap-1">
           <Clock className="w-3 h-3" />
           <span>Pending</span>
         </span>
@@ -350,7 +350,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
     }
     if (s === 'approved') {
       return (
-        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1">
           <CheckCircle2 className="w-3 h-3" />
           <span>Approved</span>
         </span>
@@ -358,7 +358,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
     }
     if (s === 'suspended') {
       return (
-        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-500/15 text-red-300 border border-red-500/30 flex items-center gap-1">
+        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40 flex items-center gap-1">
           <ShieldAlert className="w-3 h-3" />
           <span>Suspended</span>
         </span>
@@ -382,12 +382,12 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Strip with count and refresh */}
-      <div className="flex items-center justify-between gap-3 bg-[#121820] border border-white/10 rounded-2xl p-4 sm:p-5 shadow-sm">
+      <div className="flex items-center justify-between gap-3 bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 shadow-sm">
         <div>
-          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+          <h2 className="text-[20px] font-bold text-white tracking-tight leading-tight">
             Driver Partner Applications
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-[#A3A3A3] mt-0.5">
             Review partner registrations and manage fleet approvals.
           </p>
         </div>
@@ -395,25 +395,25 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
         <button
           onClick={() => loadDrivers(true)}
           disabled={isRefreshing || isLoading}
-          className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-zinc-300 transition-colors border border-white/10 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
+          className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 text-white transition-colors border border-white/20 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
           title="Refresh Drivers"
           aria-label="Refresh Drivers"
         >
-          <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-emerald-400' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-[#F59E0B]' : ''}`} />
         </button>
       </div>
 
       {/* Notifications */}
       {successMessage && (
-        <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+        <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{successMessage}</span>
         </div>
       )}
 
       {errorMessage && (
-        <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/30 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+          <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
           <span>{errorMessage}</span>
         </div>
       )}
@@ -427,16 +427,16 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
             <button
               key={tab}
               onClick={() => handleFilterChange(tab)}
-              className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all flex items-center gap-1.5 cursor-pointer ${
                 isActive
-                  ? 'bg-emerald-500 text-black shadow-md'
-                  : 'bg-[#121820] text-zinc-300 hover:text-white border border-white/5'
+                  ? 'bg-white text-black shadow-sm'
+                  : 'bg-[#141414] text-[#A3A3A3] hover:text-white border border-[#262626]'
               }`}
             >
               <span>{tab}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-                  isActive ? 'bg-black/20 text-black' : 'bg-white/10 text-zinc-400'
+                  isActive ? 'bg-black/20 text-black' : 'bg-white/10 text-[#A3A3A3]'
                 }`}
               >
                 {count}
@@ -448,14 +448,14 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
 
       {/* Drivers List */}
       {isLoading ? (
-        <div className="p-12 text-center bg-[#121820] border border-white/10 rounded-2xl space-y-3">
-          <Loader2 className="w-7 h-7 animate-spin text-emerald-400 mx-auto" />
-          <p className="text-sm text-zinc-400">Loading driver partners...</p>
+        <div className="p-12 text-center bg-[#141414] border border-[#262626] rounded-2xl space-y-3">
+          <Loader2 className="w-7 h-7 animate-spin text-[#F59E0B] mx-auto" />
+          <p className="text-sm text-[#A3A3A3]">Loading driver partners...</p>
         </div>
       ) : filteredDrivers.length === 0 ? (
-        <div className="p-12 text-center bg-[#121820] border border-white/10 rounded-2xl space-y-2">
-          <p className="text-base font-semibold text-white">No {activeTab.toLowerCase()} drivers</p>
-          <p className="text-xs text-zinc-400">
+        <div className="p-12 text-center bg-[#141414] border border-[#262626] rounded-2xl space-y-2">
+          <p className="text-base font-bold text-white">No {activeTab.toLowerCase()} drivers</p>
+          <p className="text-xs text-[#A3A3A3]">
             {activeTab === 'All'
               ? 'No driver partners have registered yet.'
               : `There are currently no drivers with status "${activeTab}".`}
@@ -478,7 +478,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
               <div
                 key={driver.id}
                 id={`driver-card-${driver.id}`}
-                className="bg-[#121820] border border-white/10 hover:border-white/20 rounded-2xl p-4 sm:p-5 space-y-4 shadow-md transition-all"
+                className="bg-[#141414] border border-[#262626] hover:border-white/20 rounded-2xl p-4 sm:p-5 space-y-4 shadow-md transition-all"
               >
                 {/* Driver Info Header */}
                 <div className="flex items-start justify-between gap-3">
@@ -491,11 +491,11 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                     </div>
 
                     {/* Phone Number */}
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-300 mt-1">
-                      <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <div className="flex items-center gap-1.5 text-xs text-[#A3A3A3] mt-1">
+                      <Phone className="w-3.5 h-3.5 text-white shrink-0" />
                       <a
                         href={`tel:${driver.phone}`}
-                        className="font-mono text-zinc-200 hover:text-emerald-400 transition-colors min-h-[36px] flex items-center"
+                        className="font-mono text-white hover:text-[#F59E0B] transition-colors min-h-[36px] flex items-center"
                       >
                         +91 {driver.phone}
                       </a>
@@ -505,10 +505,10 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                   {/* Vehicle Details */}
                   {vehicle && (
                     <div className="text-right shrink-0">
-                      <span className="font-mono text-sm sm:text-base font-extrabold text-emerald-400 tracking-wider">
+                      <span className="font-mono text-sm sm:text-base font-extrabold text-[#F59E0B] tracking-wider">
                         {vehicle.reg_no}
                       </span>
-                      <p className="text-xs text-zinc-300 uppercase font-semibold">
+                      <p className="text-xs text-[#A3A3A3] uppercase font-bold tracking-wider">
                         {vehicle.vehicle_type}
                       </p>
                     </div>
@@ -516,13 +516,13 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                 </div>
 
                 {/* Driver Documents Section */}
-                <div className="space-y-2 pt-2 border-t border-white/5">
+                <div className="space-y-2 pt-2 border-t border-[#262626]">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-zinc-400 flex items-center gap-1.5">
-                      <FileText className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] flex items-center gap-1.5">
+                      <FileText className="w-3.5 h-3.5 text-[#F59E0B]" />
                       <span>Driver Documents</span>
                     </span>
-                    <span className="text-[11px] text-zinc-400 font-medium">
+                    <span className="text-[11px] text-[#F59E0B] font-mono font-bold">
                       {uploadedCount} of 4 uploaded
                     </span>
                   </div>
@@ -540,22 +540,22 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                           onClick={() => openDocViewer(driver, docIdx)}
                           className={`min-h-[44px] px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-between gap-1.5 border ${
                             isUploaded
-                              ? 'bg-emerald-950/30 hover:bg-emerald-900/40 active:bg-emerald-800/50 text-emerald-200 border-emerald-500/30 hover:border-emerald-500/50 cursor-pointer shadow-sm'
-                              : 'bg-white/5 text-zinc-500 border-white/5 cursor-not-allowed opacity-60'
+                              ? 'bg-white/5 hover:bg-white/10 active:bg-white/15 text-white border-white/20 cursor-pointer shadow-sm'
+                              : 'bg-[#0A0A0A] text-[#A3A3A3] border-[#262626] cursor-not-allowed opacity-50'
                           }`}
                           title={isUploaded ? `View ${item.title}` : `${item.label} not uploaded`}
                         >
                           <div className="flex items-center gap-1.5 truncate">
                             <span
                               className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                                isUploaded ? 'bg-emerald-400' : 'bg-zinc-600'
+                                isUploaded ? 'bg-emerald-400' : 'bg-neutral-600'
                               }`}
                             />
                             <span className="truncate">{item.label}</span>
                           </div>
                           <ExternalLink
                             className={`w-3.5 h-3.5 shrink-0 ${
-                              isUploaded ? 'text-emerald-400' : 'text-zinc-600'
+                              isUploaded ? 'text-white' : 'text-neutral-600'
                             }`}
                           />
                         </button>
@@ -564,18 +564,18 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                   </div>
                 </div>
 
-                <div className="h-px bg-white/5" />
+                <div className="h-px bg-[#262626]" />
 
                 {/* Inline Confirmation Card for Suspend or Reject */}
                 {isConfirming && confirmingAction ? (
-                  <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 space-y-2.5 animate-in fade-in">
+                  <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 space-y-2.5 animate-in fade-in">
                     <div className="flex items-center gap-2 text-red-200 text-xs font-semibold">
-                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                      <AlertTriangle className="w-4 h-4 text-[#EF4444] shrink-0" />
                       <span>
                         Are you sure you want to {confirmingAction.action} {driver.name}?
                       </span>
                     </div>
-                    <p className="text-[11px] text-zinc-300">
+                    <p className="text-[11px] text-[#A3A3A3]">
                       This will set both owner account and vehicle status to 'suspended'.
                     </p>
                     <div className="flex items-center gap-2 pt-1">
@@ -583,7 +583,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                         type="button"
                         disabled={isProcessing}
                         onClick={() => handleUpdateStatus(driver, 'suspended')}
-                        className="min-h-[44px] px-4 py-2 bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="min-h-[44px] px-4 py-2 bg-[#EF4444] hover:bg-red-600 text-white font-bold text-xs rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
                       >
                         {isProcessing ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -598,7 +598,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                         type="button"
                         disabled={isProcessing}
                         onClick={() => setConfirmingAction(null)}
-                        className="min-h-[44px] px-3.5 py-2 bg-white/10 hover:bg-white/15 text-zinc-200 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                        className="min-h-[44px] px-3.5 py-2 bg-transparent border border-white/20 text-white text-xs font-medium hover:bg-white/5 rounded-xl transition-colors cursor-pointer"
                       >
                         Cancel
                       </button>
@@ -613,7 +613,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                         type="button"
                         disabled={isProcessing}
                         onClick={() => handleUpdateStatus(driver, 'approved')}
-                        className="min-h-[44px] px-4 py-2 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-md shadow-emerald-950/40 cursor-pointer"
+                        className="min-h-[44px] px-4 py-2 bg-white hover:bg-neutral-200 text-black font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-md cursor-pointer"
                       >
                         {isProcessing ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -632,9 +632,9 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                         type="button"
                         disabled={isProcessing}
                         onClick={() => setConfirmingAction({ driverId: driver.id, action: 'suspend' })}
-                        className="min-h-[44px] px-3.5 py-2 bg-white/5 hover:bg-red-950/40 border border-white/10 hover:border-red-500/40 text-zinc-300 hover:text-red-300 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+                        className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
-                        <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
+                        <ShieldAlert className="w-3.5 h-3.5 text-[#EF4444]" />
                         <span>Suspend</span>
                       </button>
                     )}
@@ -645,9 +645,9 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                         type="button"
                         disabled={isProcessing}
                         onClick={() => setConfirmingAction({ driverId: driver.id, action: 'reject' })}
-                        className="min-h-[44px] px-3.5 py-2 bg-white/5 hover:bg-red-950/40 border border-white/10 hover:border-red-500/40 text-zinc-300 hover:text-red-300 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
+                        className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
-                        <X className="w-3.5 h-3.5 text-red-400" />
+                        <X className="w-3.5 h-3.5 text-[#EF4444]" />
                         <span>Reject</span>
                       </button>
                     )}
@@ -664,27 +664,27 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
         <div 
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col p-3 sm:p-5 animate-in fade-in duration-150"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col p-3 sm:p-5 animate-in fade-in duration-150"
         >
           {/* Modal Header */}
-          <div className="flex items-center justify-between gap-3 bg-[#121820] border border-white/10 rounded-2xl p-3 sm:p-4 shadow-xl">
+          <div className="flex items-center justify-between gap-3 bg-[#141414] border border-[#262626] rounded-2xl p-3 sm:p-4 shadow-xl">
             {/* Driver & Document Info */}
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-sm sm:text-base font-bold text-white truncate">
+                <span className="text-sm sm:text-base font-bold text-white tracking-tight truncate">
                   {viewerModal.driver.name}
                 </span>
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 font-bold">
                   {activeDocConfig.title}
                 </span>
-                <span className="text-xs text-zinc-400 font-mono hidden sm:inline">
+                <span className="text-xs text-[#A3A3A3] font-mono hidden sm:inline">
                   ({viewerModal.docIndex + 1} of 4)
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-zinc-400 mt-0.5">
+              <div className="flex items-center gap-3 text-xs text-[#A3A3A3] mt-0.5">
                 <span>Phone: +91 {viewerModal.driver.phone}</span>
                 {getVehicle(viewerModal.driver)?.reg_no && (
-                  <span className="font-mono text-zinc-300 font-bold">
+                  <span className="font-mono text-[#F59E0B] font-bold">
                     Reg: {getVehicle(viewerModal.driver)?.reg_no}
                   </span>
                 )}
@@ -699,7 +699,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                   download={`${viewerModal.driver.name.replace(/\s+/g, '_')}_${activeDocConfig.type}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black font-bold text-xs rounded-xl shadow-md transition-all min-h-[40px] cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-neutral-200 active:bg-neutral-300 text-black font-bold text-xs rounded-xl shadow-md transition-all min-h-[40px] cursor-pointer"
                   title="Download Document"
                 >
                   <Download className="w-4 h-4" />
@@ -710,7 +710,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
               <button
                 type="button"
                 onClick={() => setViewerModal(null)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 active:bg-white/25 text-white font-semibold text-xs rounded-xl border border-white/10 transition-colors min-h-[40px] cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-transparent hover:bg-white/5 active:bg-white/10 text-white font-medium text-xs rounded-xl border border-white/20 transition-colors min-h-[40px] cursor-pointer"
                 title="Close Viewer (Esc)"
               >
                 <X className="w-4 h-4" />
@@ -720,23 +720,23 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
           </div>
 
           {/* Modal Body: File View / Loading / Error Display */}
-          <div className="flex-1 min-h-0 relative flex items-center justify-center bg-[#0b0f14] border border-white/10 rounded-2xl overflow-hidden my-3 p-1 sm:p-3">
+          <div className="flex-1 min-h-0 relative flex items-center justify-center bg-[#0A0A0A] border border-[#262626] rounded-2xl overflow-hidden my-3 p-1 sm:p-3">
             {viewerModal.isLoading ? (
               <div className="flex flex-col items-center justify-center p-8 space-y-3">
-                <Loader2 className="w-9 h-9 animate-spin text-emerald-400" />
-                <p className="text-sm text-zinc-400 font-medium">
+                <Loader2 className="w-9 h-9 animate-spin text-[#F59E0B]" />
+                <p className="text-sm text-[#A3A3A3] font-medium">
                   Loading {activeDocConfig.title}...
                 </p>
               </div>
             ) : viewerModal.error ? (
               /* Requirement 6: "If the signed URL fails, show 'Could not open document' inside the modal with the error text. Do not navigate away." */
               <div className="flex flex-col items-center justify-center p-6 space-y-4 max-w-md mx-auto text-center animate-in fade-in">
-                <div className="w-14 h-14 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center text-red-400">
+                <div className="w-14 h-14 bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-2xl flex items-center justify-center text-[#EF4444]">
                   <AlertCircle className="w-7 h-7" />
                 </div>
                 <div className="space-y-1.5">
                   <h3 className="text-base font-bold text-white">Could not open document</h3>
-                  <p className="text-xs text-red-300 font-mono bg-red-950/60 p-3 rounded-xl border border-red-500/30 break-all leading-relaxed">
+                  <p className="text-xs text-[#EF4444] font-mono bg-[#EF4444]/10 p-3 rounded-xl border border-[#EF4444]/30 break-all leading-relaxed">
                     {viewerModal.error}
                   </p>
                 </div>
@@ -744,7 +744,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                   <button
                     type="button"
                     onClick={() => openDocViewer(viewerModal.driver, viewerModal.docIndex)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white/10 hover:bg-white/15 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-transparent hover:bg-white/5 text-white text-xs font-semibold rounded-xl border border-white/20 transition-colors cursor-pointer"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                     <span>Try Again</span>
@@ -757,14 +757,14 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                 <iframe
                   src={viewerModal.signedUrl}
                   title={`${viewerModal.driver.name} - ${activeDocConfig.title}`}
-                  className="w-full h-full rounded-xl bg-white border border-white/10 shadow-inner"
+                  className="w-full h-full rounded-xl bg-white border border-[#262626] shadow-inner"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center overflow-auto p-2">
                   <img
                     src={viewerModal.signedUrl}
                     alt={`${viewerModal.driver.name} - ${activeDocConfig.title}`}
-                    className="max-w-full max-h-[72vh] sm:max-h-[76vh] object-contain rounded-xl shadow-2xl border border-white/10 select-none"
+                    className="max-w-full max-h-[72vh] sm:max-h-[76vh] object-contain rounded-xl shadow-2xl border border-[#262626] select-none"
                   />
                 </div>
               )
@@ -773,22 +773,22 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
 
           {/* Modal Footer: Previous / Next & Document Jump Pills */}
           {/* Requirement 4: "Add 'Previous' and 'Next' buttons in the modal to move between the driver's documents (RC → Permit → Insurance → Licence) without closing it." */}
-          <div className="flex items-center justify-between gap-2 bg-[#121820] border border-white/10 rounded-2xl p-2.5 sm:p-3 shadow-xl">
+          <div className="flex items-center justify-between gap-2 bg-[#141414] border border-[#262626] rounded-2xl p-2.5 sm:p-3 shadow-xl">
             {/* Previous Button */}
             <button
               type="button"
               disabled={viewerModal.docIndex === 0 || viewerModal.isLoading}
               onClick={() => handleNavigateDoc(viewerModal.docIndex - 1)}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all min-h-[42px] ${
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] ${
                 viewerModal.docIndex === 0
-                  ? 'bg-white/5 text-zinc-600 border border-white/5 cursor-not-allowed'
-                  : 'bg-[#0b0f14] hover:bg-white/10 active:bg-white/15 text-zinc-200 hover:text-white border border-white/15 cursor-pointer shadow-md'
+                  ? 'bg-transparent text-neutral-600 border border-white/5 cursor-not-allowed opacity-40'
+                  : 'bg-transparent hover:bg-white/5 active:bg-white/10 text-white border border-white/20 cursor-pointer shadow-sm'
               }`}
             >
               <ChevronLeft className="w-4 h-4" />
               <span>Previous</span>
               {viewerModal.docIndex > 0 && (
-                <span className="hidden sm:inline text-[11px] text-zinc-400 font-mono">
+                <span className="hidden sm:inline text-[11px] text-[#A3A3A3] font-mono">
                   ({ADMIN_DOC_ITEMS[viewerModal.docIndex - 1].label})
                 </span>
               )}
@@ -806,18 +806,18 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
                     key={item.type}
                     type="button"
                     onClick={() => handleNavigateDoc(idx)}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
                       isCurrent
-                        ? 'bg-emerald-500 text-black shadow-md'
+                        ? 'bg-white text-black font-bold shadow-md'
                         : hasDoc
-                        ? 'bg-white/10 text-zinc-300 hover:text-white hover:bg-white/15'
-                        : 'bg-white/5 text-zinc-500 hover:text-zinc-400 opacity-60'
+                        ? 'bg-[#141414] border border-[#262626] text-[#A3A3A3] hover:text-white hover:border-white/20'
+                        : 'bg-[#0A0A0A] border border-[#262626]/50 text-neutral-500 opacity-60'
                     }`}
                     title={`${item.title} ${hasDoc ? '(Uploaded)' : '(Not Uploaded)'}`}
                   >
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
-                        isCurrent ? 'bg-black' : hasDoc ? 'bg-emerald-400' : 'bg-zinc-600'
+                        isCurrent ? 'bg-black' : hasDoc ? 'bg-[#22c55e]' : 'bg-neutral-600'
                       }`}
                     />
                     <span>{item.label}</span>
@@ -831,15 +831,15 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
               type="button"
               disabled={viewerModal.docIndex === ADMIN_DOC_ITEMS.length - 1 || viewerModal.isLoading}
               onClick={() => handleNavigateDoc(viewerModal.docIndex + 1)}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all min-h-[42px] ${
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] ${
                 viewerModal.docIndex === ADMIN_DOC_ITEMS.length - 1
-                  ? 'bg-white/5 text-zinc-600 border border-white/5 cursor-not-allowed'
-                  : 'bg-[#0b0f14] hover:bg-white/10 active:bg-white/15 text-zinc-200 hover:text-white border border-white/15 cursor-pointer shadow-md'
+                  ? 'bg-transparent text-neutral-600 border border-white/5 cursor-not-allowed opacity-40'
+                  : 'bg-transparent hover:bg-white/5 active:bg-white/10 text-white border border-white/20 cursor-pointer shadow-sm'
               }`}
             >
               <span>Next</span>
               {viewerModal.docIndex < ADMIN_DOC_ITEMS.length - 1 && (
-                <span className="hidden sm:inline text-[11px] text-zinc-400 font-mono">
+                <span className="hidden sm:inline text-[11px] text-[#A3A3A3] font-mono">
                   ({ADMIN_DOC_ITEMS[viewerModal.docIndex + 1].label})
                 </span>
               )}
