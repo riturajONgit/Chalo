@@ -15,7 +15,8 @@ import {
   ExternalLink,
   Download,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  RotateCcw
 } from 'lucide-react';
 
 export type DocType = 'rc' | 'permit' | 'insurance' | 'dl';
@@ -87,10 +88,8 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [actionInProgressId, setActionInProgressId] = useState<string | null>(null);
-  const [confirmingAction, setConfirmingAction] = useState<{
-    driverId: string;
-    action: 'suspend' | 'reject';
-  } | null>(null);
+  const [currentAction, setCurrentAction] = useState<string | null>(null);
+  const [driverErrors, setDriverErrors] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -109,7 +108,6 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
   // Sync tab & filter to URL search params
   const handleFilterChange = (tab: DriverFilterTab) => {
     setActiveTab(tab);
-    setConfirmingAction(null);
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('tab', 'drivers');
@@ -281,46 +279,97 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
     loadDrivers();
   }, [loadDrivers]);
 
-  // Execute status update on both owners and vehicles tables
-  const handleUpdateStatus = async (owner: DriverOwner, targetStatus: 'approved' | 'suspended') => {
+  // Execute status update via admin_set_driver_status RPC only
+  const handleSetDriverStatus = async (
+    owner: DriverOwner,
+    targetStatus: 'approved' | 'suspended' | 'pending',
+    actionKey?: string
+  ) => {
     setActionInProgressId(owner.id);
+    setCurrentAction(actionKey || targetStatus);
+
+    // Clear existing error for this specific driver card
+    setDriverErrors((prev) => {
+      const next = { ...prev };
+      delete next[owner.id];
+      return next;
+    });
     setErrorMessage(null);
     setSuccessMessage(null);
-    setConfirmingAction(null);
+
+    const vehicle = getVehicle(owner);
+    const uploadedCount = vehicle
+      ? ADMIN_DOC_ITEMS.filter((item) => vehicle[item.field] != null && vehicle[item.field] !== '').length
+      : 0;
 
     try {
-      // 1. Update owners row
-      const { error: ownerError } = await supabase
-        .from('owners')
-        .update({ status: targetStatus })
-        .eq('id', owner.id);
+      const { error } = await supabase.rpc('admin_set_driver_status', {
+        p_owner: owner.id,
+        p_status: targetStatus,
+      });
 
-      if (ownerError) {
-        throw new Error(`Owner update failed: ${ownerError.message}`);
-      }
+      if (error) {
+        let msg = error.message || 'Failed to update driver status.';
+        const lower = msg.toLowerCase();
+        if (
+          (targetStatus === 'approved' && uploadedCount < 4) ||
+          lower.includes('document') ||
+          lower.includes('rc') ||
+          lower.includes('permit') ||
+          lower.includes('insurance') ||
+          lower.includes('licence') ||
+          lower.includes('license') ||
+          lower.includes('upload') ||
+          lower.includes('cannot approve')
+        ) {
+          msg = 'Cannot approve: RC, permit, insurance and licence must all be uploaded';
+        }
 
-      // 2. Update that driver's vehicles row
-      const { error: vehicleError } = await supabase
-        .from('vehicles')
-        .update({ status: targetStatus })
-        .eq('owner_id', owner.id);
-
-      if (vehicleError) {
-        throw new Error(`Vehicle update failed: ${vehicleError.message}`);
+        setDriverErrors((prev) => ({
+          ...prev,
+          [owner.id]: msg,
+        }));
+        // Keep driver card unchanged until the call succeeds
+        return;
       }
 
       setSuccessMessage(
-        `Driver ${owner.name} marked as ${targetStatus === 'approved' ? 'Approved' : 'Suspended'}.`
+        `Driver ${owner.name} status updated to ${
+          targetStatus === 'approved'
+            ? 'Approved'
+            : targetStatus === 'pending'
+            ? 'Pending'
+            : 'Suspended'
+        }.`
       );
       setTimeout(() => setSuccessMessage(null), 3000);
 
-      // Refresh list
+      // Refresh list only upon successful RPC
       await loadDrivers(true);
     } catch (err: any) {
       console.warn('Driver status update notice:', err);
-      setErrorMessage(err.message || 'Failed to update driver status.');
+      let msg = err?.message || 'Failed to update driver status.';
+      const lower = msg.toLowerCase();
+      if (
+        (targetStatus === 'approved' && uploadedCount < 4) ||
+        lower.includes('document') ||
+        lower.includes('rc') ||
+        lower.includes('permit') ||
+        lower.includes('insurance') ||
+        lower.includes('licence') ||
+        lower.includes('license') ||
+        lower.includes('upload') ||
+        lower.includes('cannot approve')
+      ) {
+        msg = 'Cannot approve: RC, permit, insurance and licence must all be uploaded';
+      }
+      setDriverErrors((prev) => ({
+        ...prev,
+        [owner.id]: msg,
+      }));
     } finally {
       setActionInProgressId(null);
+      setCurrentAction(null);
     }
   };
 
@@ -467,7 +516,7 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
             const vehicle = getVehicle(driver);
             const status = (driver.status || '').toLowerCase();
             const isProcessing = actionInProgressId === driver.id;
-            const isConfirming = confirmingAction?.driverId === driver.id;
+            const cardError = driverErrors[driver.id];
 
             // Count a document as uploaded when its URL field is not null
             const uploadedCount = vehicle
@@ -566,93 +615,84 @@ export const AdminDrivers: React.FC<AdminDriversProps> = () => {
 
                 <div className="h-px bg-[#262626]" />
 
-                {/* Inline Confirmation Card for Suspend or Reject */}
-                {isConfirming && confirmingAction ? (
-                  <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 space-y-2.5 animate-in fade-in">
-                    <div className="flex items-center gap-2 text-red-200 text-xs font-semibold">
-                      <AlertTriangle className="w-4 h-4 text-[#EF4444] shrink-0" />
-                      <span>
-                        Are you sure you want to {confirmingAction.action} {driver.name}?
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-[#A3A3A3]">
-                      This will set both owner account and vehicle status to 'suspended'.
-                    </p>
-                    <div className="flex items-center gap-2 pt-1">
-                      <button
-                        type="button"
-                        disabled={isProcessing}
-                        onClick={() => handleUpdateStatus(driver, 'suspended')}
-                        className="min-h-[44px] px-4 py-2 bg-[#EF4444] hover:bg-red-600 text-white font-bold text-xs rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
-                      >
-                        {isProcessing ? (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        ) : (
-                          <>
-                            <Check className="w-3.5 h-3.5" />
-                            <span>Confirm {confirmingAction.action === 'suspend' ? 'Suspend' : 'Reject'}</span>
-                          </>
-                        )}
-                      </button>
-                      <button
-                        type="button"
-                        disabled={isProcessing}
-                        onClick={() => setConfirmingAction(null)}
-                        className="min-h-[44px] px-3.5 py-2 bg-transparent border border-white/20 text-white text-xs font-medium hover:bg-white/5 rounded-xl transition-colors cursor-pointer"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  /* Action Buttons: Approve, Suspend, Reject */
-                  <div className="flex items-center gap-2 flex-wrap pt-1">
-                    {/* Approve Button */}
-                    {status !== 'approved' && (
-                      <button
-                        type="button"
-                        disabled={isProcessing}
-                        onClick={() => handleUpdateStatus(driver, 'approved')}
-                        className="min-h-[44px] px-4 py-2 bg-white hover:bg-neutral-200 text-black font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-md cursor-pointer"
-                      >
-                        {isProcessing ? (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        ) : (
-                          <>
-                            <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                            <span>Approve Driver</span>
-                          </>
-                        )}
-                      </button>
-                    )}
-
-                    {/* Suspend Button (for approved or active drivers) */}
-                    {status === 'approved' && (
-                      <button
-                        type="button"
-                        disabled={isProcessing}
-                        onClick={() => setConfirmingAction({ driverId: driver.id, action: 'suspend' })}
-                        className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
-                      >
-                        <ShieldAlert className="w-3.5 h-3.5 text-[#EF4444]" />
-                        <span>Suspend</span>
-                      </button>
-                    )}
-
-                    {/* Reject Button (for pending applications) */}
-                    {status === 'pending' && (
-                      <button
-                        type="button"
-                        disabled={isProcessing}
-                        onClick={() => setConfirmingAction({ driverId: driver.id, action: 'reject' })}
-                        className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
-                      >
-                        <X className="w-3.5 h-3.5 text-[#EF4444]" />
-                        <span>Reject</span>
-                      </button>
-                    )}
+                {/* Driver Card Specific Error Display */}
+                {cardError && (
+                  <div className="p-3.5 rounded-xl bg-red-950/40 border border-[#EF4444]/40 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+                    <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
+                    <span className="font-semibold leading-relaxed">{cardError}</span>
                   </div>
                 )}
+
+                {/* Action Buttons: Approve, Suspend, Reject, Reset to pending */}
+                <div className="flex items-center gap-2 flex-wrap pt-1">
+                  {/* Approve Button (when status is pending or suspended) */}
+                  {status !== 'approved' && (
+                    <button
+                      type="button"
+                      disabled={isProcessing}
+                      onClick={() => handleSetDriverStatus(driver, 'approved', 'approve')}
+                      className="min-h-[44px] px-4 py-2 bg-white hover:bg-neutral-200 text-black font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors shadow-md cursor-pointer disabled:opacity-50"
+                    >
+                      {isProcessing && currentAction === 'approve' ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                      )}
+                      <span>Approve</span>
+                    </button>
+                  )}
+
+                  {/* Suspend Button (when status is approved) */}
+                  {status === 'approved' && (
+                    <button
+                      type="button"
+                      disabled={isProcessing}
+                      onClick={() => handleSetDriverStatus(driver, 'suspended', 'suspend')}
+                      className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      {isProcessing && currentAction === 'suspend' ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#EF4444]" />
+                      ) : (
+                        <ShieldAlert className="w-3.5 h-3.5 text-[#EF4444]" />
+                      )}
+                      <span>Suspend</span>
+                    </button>
+                  )}
+
+                  {/* Reject Button (when status is pending) */}
+                  {status === 'pending' && (
+                    <button
+                      type="button"
+                      disabled={isProcessing}
+                      onClick={() => handleSetDriverStatus(driver, 'suspended', 'reject')}
+                      className="min-h-[44px] px-3.5 py-2 border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      {isProcessing && currentAction === 'reject' ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#EF4444]" />
+                      ) : (
+                        <X className="w-3.5 h-3.5 text-[#EF4444]" />
+                      )}
+                      <span>Reject</span>
+                    </button>
+                  )}
+
+                  {/* Reset to pending (for any driver whose status is approved or suspended) */}
+                  {(status === 'approved' || status === 'suspended') && (
+                    <button
+                      type="button"
+                      disabled={isProcessing}
+                      onClick={() => handleSetDriverStatus(driver, 'pending', 'reset')}
+                      className="min-h-[44px] px-3.5 py-2 border border-white/20 text-[#A3A3A3] hover:text-white hover:bg-white/5 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                    >
+                      {isProcessing && currentAction === 'reset' ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#F59E0B]" />
+                      ) : (
+                        <RotateCcw className="w-3.5 h-3.5" />
+                      )}
+                      <span>Reset to pending</span>
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}
