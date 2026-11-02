@@ -8,7 +8,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 export const CHALO_WHATSAPP_NUMBER = '918319687057';
 export const CHALO_WHATSAPP_DISPLAY = '+91 8319687057';
 
-export type VehicleType = 'sedan' | 'suv';
+export type VehicleType = 'sedan' | 'suv' | 'auto' | 'bike' | 'tempo';
 export type TripType = 'one_way' | 'round_trip';
 
 export interface RouteInfo {
@@ -29,6 +29,33 @@ export const REWA_PICKUP_SUGGESTIONS = [
   'Bichhiya, Rewa',
   'Jayanti Kunj / Kothi Road, Rewa',
 ];
+
+export interface DestinationItem {
+  destination: string;
+  km: number;
+  bookable: boolean;
+}
+
+// 6 Outstation cities for Sedan and SUV (all bookable, in km order)
+export const OUTSTATION_DESTINATIONS: DestinationItem[] = [
+  { destination: 'Satna', km: 55, bookable: true },
+  { destination: 'Prayagraj', km: 130, bookable: true },
+  { destination: 'Khajuraho', km: 165, bookable: true },
+  { destination: 'Varanasi', km: 230, bookable: true },
+  { destination: 'Jabalpur', km: 240, bookable: true },
+  { destination: 'Bhopal', km: 540, bookable: true },
+];
+
+export async function fetchDestinationsForVehicle(vehicle: VehicleType): Promise<DestinationItem[]> {
+  if (vehicle === 'auto' || vehicle === 'bike') {
+    const { data, error } = await supabase.rpc('list_destinations', { p_vehicle: vehicle });
+    if (!error && Array.isArray(data)) {
+      return [...data].sort((a, b) => (Number(a.km) || 0) - (Number(b.km) || 0));
+    }
+    return [];
+  }
+  return OUTSTATION_DESTINATIONS;
+}
 
 export const DESTINATIONS: RouteInfo[] = [
   {
@@ -78,23 +105,4 @@ export const DESTINATIONS: RouteInfo[] = [
 export interface BookingResult {
   code: string;
   fare: number;
-}
-
-// Known base fares from database for fallback when network is interrupted
-const FARE_MAP: Record<string, { sedan: number; suv: number }> = {
-  Satna: { sedan: 800, suv: 1000 },
-  Prayagraj: { sedan: 1500, suv: 1820 },
-  Varanasi: { sedan: 2310, suv: 2990 },
-  Jabalpur: { sedan: 2420, suv: 3120 },
-  Khajuraho: { sedan: 3080, suv: 3960 },
-  Bhopal: { sedan: 4290, suv: 5590 },
-};
-
-export function getEstimatedFare(dest: string, vehicle: VehicleType, trip: TripType): number {
-  const rates = FARE_MAP[dest] || { sedan: 1500, suv: 1820 };
-  const base = rates[vehicle] || 1500;
-  if (trip === 'round_trip') {
-    return Math.round(base * 1.9);
-  }
-  return base;
 }

@@ -21,6 +21,7 @@ import {
   MessageSquare,
   ExternalLink
 } from 'lucide-react';
+import { VehicleIcon } from './VehicleIcons';
 
 export interface BookingLookupResult {
   code: string;
@@ -302,7 +303,7 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
   const canCancel = ['requested', 'assigned', 'confirmed'].includes(statusLower);
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in duration-200 pb-10">
+    <div className="w-full max-w-[440px] mx-auto space-y-4 animate-in fade-in duration-200 pb-16">
       {/* Back button */}
       <div className="flex items-center justify-between">
         <button
@@ -317,10 +318,9 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
 
       {/* Hero Header */}
       <div className="space-y-1.5 text-left">
-        <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-semibold text-[#F59E0B] bg-[#F59E0B]/10 border border-[#F59E0B]/20 px-3 py-0.5 rounded-full">
-          <Search className="w-3 h-3" />
-          <span>Live Ride Tracker</span>
-        </div>
+        <span className="text-[11px] uppercase tracking-wider font-semibold text-[#F59E0B] block">
+          Live Ride Tracker
+        </span>
         <h1 className="text-[28px] font-bold text-white tracking-tight leading-tight">
           Check My Booking
         </h1>
@@ -330,8 +330,8 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
       </div>
 
       {/* Lookup Form Card */}
-      <form onSubmit={handleSubmit} className="bg-[#141414] border border-[#262626] rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      <form onSubmit={handleSubmit} className="bg-[#141414] border border-[#262626] rounded-xl p-4 sm:p-5 space-y-4 shadow-md">
+        <div className="space-y-3.5">
           {/* Booking Code Input */}
           <div>
             <label className="block text-[11px] uppercase tracking-wider font-semibold text-[#A3A3A3] mb-1.5">
@@ -347,7 +347,7 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
                 autoCapitalize="characters"
                 autoComplete="off"
                 spellCheck="false"
-                className="w-full px-3.5 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white font-mono font-bold text-sm tracking-wider uppercase placeholder:text-neutral-600 focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
+                className="w-full px-3.5 py-3 rounded-lg bg-[#0A0A0A] border border-[#262626] text-white font-mono font-bold text-sm tracking-wider uppercase placeholder:text-neutral-600 focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
               />
               {code.length === 6 && (
                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#22c55e]">
@@ -373,7 +373,7 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
                 onChange={handlePhoneChange}
                 maxLength={10}
                 placeholder="10-digit number"
-                className="w-full pl-12 pr-10 py-3 rounded-xl bg-[#0A0A0A] border border-[#262626] text-white font-mono text-sm placeholder:text-neutral-600 focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
+                className="w-full pl-12 pr-10 py-3 rounded-lg bg-[#0A0A0A] border border-[#262626] text-white font-mono text-sm placeholder:text-neutral-600 focus:outline-none focus:ring-1 focus:ring-white min-h-[48px]"
               />
               {isPhoneValid && (
                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#22c55e]">
@@ -507,8 +507,8 @@ export const CheckBooking: React.FC<CheckBookingProps> = ({
                     </p>
                   </div>
                   <div className="flex items-center gap-2 pt-0.5">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-bold text-white uppercase tracking-wider">
-                      <Car className="w-3 h-3 text-[#A3A3A3]" />
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-bold text-white uppercase tracking-wider">
+                      <VehicleIcon vehicle={booking.vehicle_type} className="w-4 h-4 text-[#A3A3A3]" />
                       <span>{booking.vehicle_type}</span>
                     </span>
                     <span className="text-[10px] font-semibold text-[#A3A3A3] uppercase tracking-wider">
