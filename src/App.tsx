@@ -9,6 +9,8 @@ import { RiderAccountBar } from './components/RiderAccountBar';
 import { RiderAuthModal } from './components/RiderAuthModal';
 import { MyTrips } from './components/MyTrips';
 import { RateCard } from './components/RateCard';
+import { TripAlertsCard } from './components/TripAlertsCard';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
 import { VehicleType, TripType, DESTINATIONS, supabase } from './lib/supabase';
 import { Shield, Clock, Award, MapPin } from 'lucide-react';
 
@@ -52,6 +54,23 @@ export default function App() {
     return false;
   });
   const [prefilledLookup, setPrefilledLookup] = useState<{ code: string; phone: string }>({ code: '', phone: '' });
+
+  // PWA standalone display mode detection
+  const [isStandalone, setIsStandalone] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone === true
+    );
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const media = window.matchMedia('(display-mode: standalone)');
+    const handler = (e: MediaQueryListEvent) => setIsStandalone(e.matches);
+    media.addEventListener('change', handler);
+    return () => media.removeEventListener('change', handler);
+  }, []);
 
   // Router navigation helper
   const navigate = useCallback((path: string) => {
@@ -166,7 +185,12 @@ export default function App() {
   const isCheckRoute = currentPath === '/check' || isCheckingBooking;
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white flex flex-col font-sans selection:bg-[#F59E0B]/30 selection:text-[#F59E0B]">
+    <div 
+      className="min-h-screen bg-[#0A0A0A] text-white flex flex-col font-sans selection:bg-[#F59E0B]/30 selection:text-[#F59E0B]"
+      style={{
+        paddingTop: isStandalone ? 'env(safe-area-inset-top, 0px)' : undefined,
+      }}
+    >
       {/* 3px Brand Saffron Stripe */}
       <div className="h-[3px] bg-[#F59E0B] w-full shrink-0" />
 
@@ -179,7 +203,7 @@ export default function App() {
       />
 
       {/* Main Container: max-width 1200px centered, 16px mobile, 32px desktop */}
-      <main className="flex-1 px-4 md:px-8 py-4 sm:py-6 max-w-[1200px] mx-auto w-full space-y-6 pb-[calc(64px+env(safe-area-inset-bottom,0px))] md:pb-12">
+      <main className="flex-1 px-4 md:px-8 py-4 sm:py-6 max-w-[1200px] mx-auto w-full space-y-6 pb-[calc(76px+env(safe-area-inset-bottom,0px))] md:pb-12">
         {/* ROUTE 1: /driver -> Dedicated Driver View. No admin components rendered. */}
         {isDriverRoute ? (
           <DriverApp onNavigate={navigate} />
@@ -223,6 +247,9 @@ export default function App() {
             />
           ) : (
             <div className="space-y-6">
+              {/* Install Chalo app button / banner under the header (Rider tab) */}
+              <PWAInstallBanner />
+
               {/* Rider Account Bar: Sign in / Create account / Sign out */}
               <RiderAccountBar
                 currentUser={currentRiderUser}
@@ -240,6 +267,11 @@ export default function App() {
                   setRiderProfile(null);
                 }}
               />
+
+              {/* Trip alerts card for signed-in riders */}
+              {currentRiderUser && (
+                <TripAlertsCard />
+              )}
 
               {/* Header Hero Title */}
               <div className="space-y-1.5 text-left pt-1">

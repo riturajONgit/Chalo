@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { formatRupees, formatISTSchedule } from '../../utils/format';
+import { TripAlertsCard } from '../TripAlertsCard';
 import { 
   Check, 
   X, 
@@ -296,6 +297,9 @@ export const DriverOffers: React.FC<DriverOffersProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Trip Alerts card for approved driver */}
+      <TripAlertsCard />
 
       {/* Notifications */}
       {successMessage && (

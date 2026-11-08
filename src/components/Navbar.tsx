@@ -122,8 +122,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Bottom Tab Bar (under 768px): Rider, Driver, Admin tabs */}
       <nav 
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 h-16 bg-[#0A0A0A]/95 backdrop-blur-md border-t border-[#262626] px-2 flex items-center justify-around"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0A0A0A]/95 backdrop-blur-md border-t border-[#262626] px-2 flex items-center justify-around"
+        style={{ 
+          height: 'calc(64px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)' 
+        }}
       >
         <button
           onClick={() => onNavigate('/')}
