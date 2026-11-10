@@ -1,5 +1,5 @@
 // Single Service Worker for Chalo PWA Caching & Web Push Notifications
-const CACHE_NAME = 'chalo-shell-v1';
+const CACHE_NAME = 'chalo-shell-v2';
 const APP_SHELL = [
   '/',
   '/manifest.webmanifest',
@@ -81,23 +81,35 @@ self.addEventListener('fetch', (event) => {
 
 // 4. Push: parse the JSON payload (title, body, url), then call self.registration.showNotification
 self.addEventListener('push', (event) => {
-  let payload = {};
-  if (event.data) {
-    try {
-      payload = event.data.json();
-    } catch (e) {
-      payload = { title: 'Chalo', body: event.data.text() };
+  const raw = event.data ? event.data.text() : '';
+  let title = '';
+  let body = '';
+  let url = '/';
+
+  try {
+    const data = JSON.parse(raw);
+    title = data.title;
+    body = data.body;
+    if (data.url) {
+      url = data.url;
     }
+  } catch (e) {
+    body = raw;
+    title = 'Chalo';
   }
 
-  const title = payload.title || 'Chalo';
-  const body = payload.body || '';
-  const url = payload.url || '/';
+  if (!title) {
+    title = 'Chalo';
+  }
+  if (!body) {
+    body = 'You have a new update from Chalo.';
+  }
 
   const options = {
     body,
     icon: '/icon-192.png',
     badge: '/icon-192.png',
+    tag: 'chalo-trip',
     data: { url }
   };
 

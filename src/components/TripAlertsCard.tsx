@@ -73,6 +73,7 @@ export const TripAlertsCard: React.FC<TripAlertsCardProps> = ({ className = '' }
       // c. Register the service worker and wait until ready
       await navigator.serviceWorker.register('/sw.js');
       const registration = await navigator.serviceWorker.ready;
+      await registration.update().catch(() => {});
 
       // d. Subscribe: reuse existing subscription if one exists
       let sub = await registration.pushManager.getSubscription();
